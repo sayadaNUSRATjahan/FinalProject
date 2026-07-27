@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journal - Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <main class="main-section">
+        
+        <!-- ১. হেডার কন্টেইনার (লোগো ও টাইটেল) -->
+        <div class="header-container">
+            <div class="logo-wrapper">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+            <div class="title-wrapper">
+                <h2>My Journal</h2>
+                <div class="subtitle">Create Your Account</div>
+            </div>
+        </div>
+
+        <!-- ২. ফর্ম কন্টেইনার -->
+        <div class="form-container">
+            
+            <!-- এরর বা মেসেজ দেখানোর ডিভ -->
+            <div id="user-register-error" class="error hidden" style="color: red; font-size: 14px; margin-bottom: 10px;"></div>
+
+            <form id="register-form" onsubmit="event.preventDefault();">
+                
+                <div class="input-field-container">
+                    <label for="name">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user input-icon"></i>
+                        <input type="text" id="name" placeholder="Enter your full name">
+                    </div>
+                </div>
+
+                <div class="input-field-container">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>
+                </div>
+
+                <div class="input-field-container">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                </div>
+
+                <div class="action-container">
+                    <button type="button" class="login-btn" onclick="handleRegister()">Register</button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- ৩. লগইন পেজে যাওয়ার লিংক -->
+        <div class="register-container">
+            <div class="register-wrapper">
+                Already have an account? <a href="index.html">Login</a>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/register.js"></script>
+
+</body>
+</html>

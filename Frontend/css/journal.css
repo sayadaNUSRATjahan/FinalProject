@@ -1,0 +1,792 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+body {
+
+    font-family:
+        'Segoe UI',
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
+
+    background: #f7f4ef;
+
+    color: #2f2f2f;
+
+    padding: 35px 20px;
+
+}
+
+
+/* =========================
+   MAIN SECTION
+========================= */
+
+.main-section {
+
+    display: flex;
+
+    justify-content: center;
+
+    width: 100%;
+
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.box {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    background: #ffffff;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.04);
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+
+    background: #ffffff;
+
+    padding:
+        5px
+        0
+        22px
+        0;
+
+    border-bottom:
+        1px solid
+        #f0ece7;
+
+    margin-bottom: 25px;
+
+}
+
+
+/* =========================
+   HEADER TOP ROW
+========================= */
+
+.header-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+/* =========================
+   JOURNAL LOGO
+========================= */
+
+.header-top h2 {
+
+    font-size: 20px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-style: italic;
+
+    color: #3b3028;
+
+}
+
+
+/* =========================
+   WELCOME SECTION
+========================= */
+
+.welcome-section {
+
+    margin-top: 22px;
+
+}
+
+
+.welcome-section h3 {
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    color: #3b3028;
+
+    margin-bottom: 5px;
+
+}
+
+
+.welcome-section p {
+
+    font-size: 12px;
+
+    color: #8b8179;
+
+}
+
+
+/* =========================
+   HEADER BUTTONS
+========================= */
+
+.header-btns {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+/* =========================
+   COMMON BUTTON
+========================= */
+
+button {
+
+    border: none;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    border-radius: 9px;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================
+   NEW ENTRY BUTTON
+========================= */
+
+#show-btn {
+
+    background: #8b6f47;
+
+    color: white;
+
+    padding:
+        11px
+        18px;
+
+}
+
+
+#show-btn:hover {
+
+    background: #735a38;
+
+}
+
+
+/* =========================
+   LOGOUT BUTTON
+========================= */
+
+#logout-btn {
+
+    background: #f3eeee;
+
+    color: #b34b4b;
+
+    padding:
+        11px
+        16px;
+
+}
+
+
+#logout-btn:hover {
+
+    background: #f9dddd;
+
+}
+
+
+/* =========================
+   NEW JOURNAL FORM
+========================= */
+
+.form-box {
+
+    background: #fffdf9;
+
+    padding: 25px;
+
+    border-radius: 16px;
+
+    border:
+        1px solid
+        #eee6dc;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(0, 0, 0, 0.05);
+
+}
+
+
+/* =========================
+   FORM TITLE ROW
+========================= */
+
+.form-title-row {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+}
+
+
+.form-title-row h3 {
+
+    font-size: 19px;
+
+    color: #4b3d32;
+
+}
+
+
+/* =========================
+   CLOSE FORM BUTTON
+========================= */
+
+#close-form {
+
+    color: #999;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   FORM LABEL
+========================= */
+
+.form-box label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #665c54;
+
+    margin-top: 15px;
+
+    margin-bottom: 7px;
+
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+input[type="text"] {
+
+    width: 100%;
+
+    padding:
+        12px
+        14px;
+
+    border:
+        1px solid
+        #e2dbd2;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+}
+
+
+/* =========================
+   TEXTAREA
+========================= */
+
+textarea {
+
+    width: 100%;
+
+    padding:
+        12px
+        14px;
+
+    border:
+        1px solid
+        #e2dbd2;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    resize: vertical;
+
+    min-height: 120px;
+
+}
+
+
+/* =========================
+   SELECT
+========================= */
+
+select {
+
+    width: 100%;
+
+    padding:
+        12px
+        14px;
+
+    border:
+        1px solid
+        #e2dbd2;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+}
+
+
+/* =========================
+   INPUT FOCUS
+========================= */
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+
+    border-color:
+        #a88a61;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            168,
+            138,
+            97,
+            0.1
+        );
+
+}
+
+
+/* =========================
+   FORM BUTTONS
+========================= */
+
+.btn-group {
+
+    display: flex;
+
+    justify-content:
+        flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+}
+
+
+/* =========================
+   CANCEL BUTTON
+========================= */
+
+#cancel-btn {
+
+    background: #f2efeb;
+
+    color: #625b55;
+
+    padding:
+        10px
+        18px;
+
+}
+
+
+#cancel-btn:hover {
+
+    background: #e8e3de;
+
+}
+
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+#save-btn {
+
+    background: #8b6f47;
+
+    color: white;
+
+    padding:
+        10px
+        20px;
+
+}
+
+
+#save-btn:hover {
+
+    background: #735a38;
+
+}
+
+
+/* =========================
+   ALL JOURNALS
+========================= */
+
+.all-journals {
+
+    width: 100%;
+
+}
+
+
+/* =========================
+   JOURNAL CARD
+========================= */
+
+.card {
+
+    width: 100%;
+
+    background: #faf8f5;
+
+    padding: 22px;
+
+    margin-bottom: 15px;
+
+    border-radius: 14px;
+
+    border:
+        1px solid
+        #f0ebe1;
+
+    box-shadow:
+        0 4px 15px
+        rgba(
+            0,
+            0,
+            0,
+            0.03
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+/* =========================
+   CARD HOVER
+========================= */
+
+.card:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 7px 20px
+        rgba(
+            0,
+            0,
+            0,
+            0.06
+        );
+
+}
+
+
+/* =========================
+   CARD CONTENT
+========================= */
+
+.card-content {
+
+    width: 100%;
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================
+   CARD TITLE
+========================= */
+
+.card-content h3 {
+
+    font-size: 19px;
+
+    color: #3c332d;
+
+    margin-bottom: 8px;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================
+   CARD META
+========================= */
+
+.card-meta {
+
+    font-size: 12px;
+
+    color: #92877d;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================
+   JOURNAL TEXT
+========================= */
+
+.journal-text,
+.card-content > p:last-child {
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    color: #5d5752;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================
+   SHOW MORE BUTTON
+========================= */
+
+.show-more-btn {
+
+    background: transparent;
+
+    border: none;
+
+    padding: 0;
+
+    margin-top: 6px;
+
+    color: #8b6f47;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.show-more-btn:hover {
+
+    color: #735a38;
+
+    text-decoration: underline;
+
+    transform: none;
+
+}
+
+
+/* =========================
+   CARD ACTIONS
+========================= */
+
+.card-actions {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content:
+        flex-end;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid
+        #f0ece7;
+
+}
+
+
+/* =========================
+   EDIT BUTTON
+========================= */
+
+.edit-btn {
+
+    background: #e8f3e8;
+
+    color: #38834a;
+
+    padding:
+        7px
+        13px;
+
+    font-size: 12px;
+
+}
+
+
+.edit-btn:hover {
+
+    background: #d8edd9;
+
+}
+
+
+/* =========================
+   DELETE BUTTON
+========================= */
+
+.delete-btn {
+
+    background: #fce9e7;
+
+    color: #c94b43;
+
+    padding:
+        7px
+        13px;
+
+    font-size: 12px;
+
+}
+
+
+.delete-btn:hover {
+
+    background: #f8d8d5;
+
+}
+
+
+/* =========================
+   HIDDEN CLASS
+========================= */
+
+.hidden {
+
+    display: none;
+
+}
