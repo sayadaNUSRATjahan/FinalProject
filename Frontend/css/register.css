@@ -1,0 +1,409 @@
+/* =========================
+   GOOGLE FONT & RESET
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   BODY (SOFT LAVENDER BACKGROUND)
+========================= */
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f2eff8 0%, #e8e3f3 50%, #f7f5fb 100%);
+    position: relative;
+    overflow-x: hidden;
+    padding: 80px 0;
+}
+
+/* =========================
+   BACKGROUND DECORATION
+========================= */
+.background-decoration {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.background-decoration::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    background: #d7cef0;
+    border-radius: 50%;
+    top: -170px;
+    left: -120px;
+    opacity: 0.55;
+    filter: blur(90px);
+}
+
+.background-decoration::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    background: #cfded6;
+    border-radius: 50%;
+    right: -120px;
+    bottom: -170px;
+    opacity: 0.6;
+    filter: blur(90px);
+}
+
+.feather, .leaf {
+    position: absolute;
+    color: #6b6488;
+    opacity: 0.18;
+    animation: floatFeather 7s ease-in-out infinite alternate;
+}
+
+.feather i, .leaf i { font-size: 85px; }
+.feather-top-left { top: 40px; left: 50px; animation-delay: 0s; }
+.feather-top-right { top: 50px; right: 60px; animation-delay: -2s; }
+
+@keyframes floatFeather {
+    0% { transform: translateY(0px) rotate(-15deg) scale(1); }
+    50% { transform: translateY(-18px) rotate(-5deg) scale(1.02); }
+    100% { transform: translateY(-30px) rotate(12deg) scale(0.98); }
+}
+
+/* =========================
+   MAIN CARD & BACK BUTTON
+========================= */
+.main-section {
+    width: 100%;
+    max-width: 520px;
+    padding: 48px;
+    border-radius: 28px;
+    background: #ffffff;
+    backdrop-filter: blur(12px);
+    border: 1px solid #e3deee;
+    box-shadow: 0 20px 50px rgba(92, 83, 118, 0.08);
+    position: relative;
+    z-index: 2;
+}
+
+.back-button-container {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.back-btn {
+    font-size: 22px;
+    color: #625883;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.back-btn:hover {
+    color: #5c5376;
+    transform: translateX(-4px);
+}
+
+/* =========================
+   HEADER & LOGO
+========================= */
+.header-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.logo-circle i,
+.main-logo-icon {
+    font-size: 65px !important;
+    color: #5c5376;
+    background: none;
+    -webkit-text-fill-color: initial;
+    filter: drop-shadow(0px 6px 12px rgba(92, 83, 118, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.logo-circle i:hover {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+.title-wrapper h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    color: #2e283d;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #6e6783;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* =========================
+   INPUT FIELDS
+========================= */
+.input-field-container {
+    margin-bottom: 22px;
+}
+
+.input-field-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3b344d;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8e83b0;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+    height: 58px;
+    padding: 0 50px 0 50px;
+    border: 1px solid #ded8eb;
+    border-radius: 15px;
+    background: #f8f6fc;
+    font-size: 15px;
+    color: #2e283d;
+    outline: none;
+    transition: .35s;
+}
+
+.input-wrapper input:focus {
+    border-color: #625883;
+    box-shadow: 0 0 0 4px rgba(98, 88, 131, 0.1);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8e83b0;
+    cursor: pointer;
+}
+
+/* 📌 FAVORITE QUOTE BOX */
+.input-wrapper.quote-box {
+    display: flex !important;
+    align-items: flex-start !important;
+    height: auto !important;
+    padding: 14px 18px !important;
+    background-color: #f8f6fc !important;
+    border: 1px solid #ded8eb !important;
+    border-radius: 15px !important;
+    transition: .35s;
+}
+
+.input-wrapper.quote-box:focus-within {
+    border-color: #625883 !important;
+    box-shadow: 0 0 0 4px rgba(98, 88, 131, 0.1) !important;
+}
+
+.quote-box .quote-icon {
+    position: static !important;
+    transform: none !important;
+    margin-top: 3px !important;
+    margin-right: 12px !important;
+    font-size: 16px !important;
+    color: #8e83b0 !important;
+    flex-shrink: 0;
+}
+
+.quote-box textarea {
+    width: 100% !important;
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 15px !important;
+    color: #2e283d !important;
+    resize: vertical;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.quote-box textarea::placeholder {
+    color: #b3acc4;
+}
+
+/* 📌 FILE UPLOAD BOX */
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-upload-box {
+    border: 2px dashed #ded8eb;
+    padding: 16px;
+    border-radius: 15px;
+    text-align: center;
+    color: #8e83b0;
+    background: #f8f6fc;
+    transition: .35s;
+    font-size: 14px;
+}
+
+.file-upload-wrapper:hover .file-upload-box {
+    border-color: #5c5376;
+    color: #5c5376;
+}
+
+.file-upload-box i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* =========================
+   BUTTON & LINK (FIXED TO SOFT LAVENDER/PURPLE)
+========================= */
+.action-container {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.login-btn {
+    width: 100%;
+    height: 58px;
+    border: none;
+    border-radius: 15px;
+    background: #5c5376; /* ল্যাভেন্ডার/সফট পার্পল থিম */
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .35s;
+    box-shadow: 0 10px 22px rgba(92, 83, 118, 0.25);
+}
+
+.login-btn:hover {
+    background: #4a4262;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px rgba(92, 83, 118, 0.3);
+}
+
+.register-container {
+    text-align: center;
+}
+
+.register-wrapper {
+    font-size: 15px;
+    color: #6e6783;
+}
+
+.register-wrapper a {
+    color: #5c5376;
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+    transition: .3s;
+}
+
+.register-wrapper a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0;
+    height: 2px;
+    background: #5c5376;
+    transition: .3s;
+}
+
+.register-wrapper a:hover { color: #4a4262; }
+.register-wrapper a:hover::after { width: 100%; }
+
+.hidden { display: none; }
+
+/* 📌 Quote Textarea Fix */
+.input-wrapper.quote-box textarea, 
+.textarea-wrapper textarea {
+    width: 100% !important;
+    height: 80px !important;
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    resize: none !important;
+}
+
+/* 📌 Hidden File Input Fix (ডিফল্ট Choose File লুকিয়ে ফেলার জন্য) */
+.hidden-file-input {
+    display: none !important;
+}
+
+/* 📌 Create Account Button Fix */
+.register-btn {
+    width: 100%;
+    height: 58px;
+    border: none;
+    border-radius: 15px;
+    background: #5c5376;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .35s;
+    box-shadow: 0 10px 22px rgba(92, 83, 118, 0.25);
+    margin-top: 15px;
+}
+
+/* =========================
+   RESPONSIVE & SCROLLBAR
+========================= */
+@media(max-width: 768px) {
+    .main-section { width: 92%; padding: 38px 28px; }
+    .title-wrapper h2 { font-size: 32px; }
+    .logo-circle i, .main-logo-icon { font-size: 50px !important; }
+}
+
+@media(max-width: 480px) {
+    body { padding: 20px; }
+    .main-section { width: 100%; padding: 30px 22px; border-radius: 22px; }
+    .title-wrapper h2 { font-size: 28px; }
+    .login-btn { height: 54px; }
+    .input-wrapper input { height: 54px; }
+}
+
+::selection { background: #5c5376; color: #ffffff; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f2eff8; }
+::-webkit-scrollbar-thumb { background: #8e83b0; border-radius: 20px; }
+::-webkit-scrollbar-thumb:hover { background: #5c5376; }

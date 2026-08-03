@@ -1,0 +1,399 @@
+/* =========================
+   1. GOOGLE FONT & RESET
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   2. BODY & BACKGROUND
+========================= */
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    background: #f3f0f9; /* সফট ল্যাভেন্ডার বেস */
+    position: relative;
+    overflow-x: hidden;
+    padding: 20px 0;
+}
+
+/* =========================
+   3. SOFT GLOW BLOB BACKGROUND
+========================= */
+.glow-bg::before,
+.glow-bg::after {
+    content: '';
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* বাম পাশের সফট পার্পল গ্লো */
+.glow-bg::before {
+    background: rgba(154, 134, 196, 0.35);
+    top: 10%;
+    left: 15%;
+}
+
+/* ডান পাশের ল্যাভেন্ডার/গোলাপি গ্লো */
+.glow-bg::after {
+    background: rgba(200, 180, 225, 0.4);
+    bottom: 10%;
+    right: 15%;
+}
+
+/* =========================
+   4. FLOATING GLASS BUBBLES
+========================= */
+.bubbles-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -100px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(180, 165, 215, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(98, 88, 131, 0.05);
+    animation: floatUp linear infinite;
+}
+
+/* আলাদা আলাদা পজিশন, সাইজ ও টাইমিং */
+.b1  { width: 40px;  height: 40px;  left: 8%;  animation-duration: 9s;  animation-delay: 0s; }
+.b2  { width: 22px;  height: 22px;  left: 20%; animation-duration: 13s; animation-delay: 2s; }
+.b3  { width: 55px;  height: 55px;  left: 32%; animation-duration: 11s; animation-delay: 4s; }
+.b4  { width: 18px;  height: 18px;  left: 48%; animation-duration: 8s;  animation-delay: 1s; }
+.b5  { width: 48px;  height: 48px;  left: 62%; animation-duration: 12s; animation-delay: 3s; }
+.b6  { width: 26px;  height: 26px;  left: 75%; animation-duration: 10s; animation-delay: 5s; }
+.b7  { width: 65px;  height: 65px;  left: 88%; animation-duration: 15s; animation-delay: 0.5s; }
+.b8  { width: 32px;  height: 32px;  left: 14%; animation-duration: 10s; animation-delay: 6s; }
+.b9  { width: 20px;  height: 20px;  left: 42%; animation-duration: 14s; animation-delay: 7s; }
+.b10 { width: 42px;  height: 42px;  left: 82%; animation-duration: 11s; animation-delay: 2.5s; }
+
+/* নিচ থেকে ওপরের দিকে ভেসে ওঠার অ্যানিমেশন */
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.8) rotate(0deg);
+        opacity: 0;
+    }
+    20% { opacity: 0.65; }
+    80% { opacity: 0.65; }
+    100% {
+        transform: translateY(-115vh) scale(1.2) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   5. MAIN CARD SECTION
+========================= */
+.main-section {
+    width: 100%;
+    max-width: 480px;
+    padding: 45px 40px;
+    border-radius: 28px;
+    background: #ffffff;
+    border: 1px solid #e3deee;
+    box-shadow: 0 20px 50px rgba(92, 83, 118, 0.08);
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================
+   6. HEADER & LOGO
+========================= */
+.header-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.logo-circle {
+    position: relative;
+    display: inline-block;
+}
+
+.main-book-icon {
+    font-size: 55px;
+    color: #5c5376;
+}
+
+.pen-nib-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    left: auto;
+    transform: rotate(-15deg);
+    font-size: 18px;
+    color: #ffffff;
+    filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.25));
+}
+
+.title-wrapper h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    color: #2e283d;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: #837a9c;
+    font-size: 14px;
+}
+
+/* =========================
+   7. FORM & INPUTS
+========================= */
+.input-field-container {
+    margin-bottom: 20px;
+}
+
+.input-field-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #3b344d;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 18px;
+    color: #9d94b8;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+    height: 54px;
+    padding: 0 45px 0 48px;
+    border: 1px solid #e5e0f0;
+    border-radius: 14px;
+    background: #f8f6fc;
+    font-size: 14px;
+    color: #2e283d;
+    outline: none;
+    transition: .3s;
+}
+
+.input-wrapper input:focus {
+    border-color: #625883;
+    box-shadow: 0 0 0 4px rgba(98, 88, 131, 0.1);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 18px;
+    color: #9d94b8;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.toggle-password:hover {
+    color: #5c5376;
+}
+
+/* REMEMBER ME CHECKBOX */
+.remember-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    font-size: 13.5px;
+    color: #5c5376;
+    font-weight: 500;
+}
+
+.remember-wrapper input {
+    width: 16px;
+    height: 16px;
+    accent-color: #5c5376;
+    cursor: pointer;
+}
+
+/* =========================
+   8. BUTTON & ACTION
+========================= */
+.action-container {
+    margin-bottom: 25px;
+}
+
+.login-btn {
+    width: 100%;
+    height: 54px;
+    border: none;
+    border-radius: 14px;
+    background: #5c5376;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 10px 22px rgba(92, 83, 118, 0.25);
+}
+
+.login-btn:hover {
+    background: #4a4262;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px rgba(92, 83, 118, 0.3);
+}
+
+.login-btn:active {
+    transform: scale(.98);
+}
+
+/* =========================
+   9. DIVIDER & REGISTER LINK
+========================= */
+.divider-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: #e5e0f0;
+}
+
+.divider-container span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #b0a8c7;
+}
+
+.register-container {
+    text-align: center;
+}
+
+.register-wrapper {
+    font-size: 14px;
+    color: #72698d;
+}
+
+.register-wrapper a {
+    color: #5c5376;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.register-wrapper a:hover {
+    text-decoration: underline;
+    color: #4a4262;
+}
+
+.error {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background: #fdf2f4;
+    border: 1px solid #f8d7da;
+    color: #c44536;
+    text-align: center;
+    font-size: 13.5px;
+}
+
+.hidden { display: none; }
+
+/* =========================
+   10. RESPONSIVE
+========================= */
+@media(max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+    .main-section {
+        padding: 35px 22px;
+        border-radius: 22px;
+    }
+    .title-wrapper h2 {
+        font-size: 28px;
+    }
+}
+
+
+
+/* =========================
+   4. FLOATING GLASS BUBBLES (MORE VISIBLE)
+========================= */
+.bubbles-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -100px;
+    /* কালার ও রিফ্লেকশন আরও গাঢ় করা হলো */
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(160, 140, 205, 0.45));
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 8px 20px rgba(98, 88, 131, 0.18), inset 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: floatUp linear infinite;
+}
+
+/* পজিশন, সাইজ ও টাইমিং */
+.b1  { width: 45px;  height: 45px;  left: 8%;  animation-duration: 9s;  animation-delay: 0s; }
+.b2  { width: 25px;  height: 25px;  left: 20%; animation-duration: 13s; animation-delay: 2s; }
+.b3  { width: 60px;  height: 60px;  left: 32%; animation-duration: 11s; animation-delay: 4s; }
+.b4  { width: 22px;  height: 22px;  left: 48%; animation-duration: 8s;  animation-delay: 1s; }
+.b5  { width: 52px;  height: 52px;  left: 62%; animation-duration: 12s; animation-delay: 3s; }
+.b6  { width: 30px;  height: 30px;  left: 75%; animation-duration: 10s; animation-delay: 5s; }
+.b7  { width: 70px;  height: 70px;  left: 88%; animation-duration: 15s; animation-delay: 0.5s; }
+.b8  { width: 38px;  height: 38px;  left: 14%; animation-duration: 10s; animation-delay: 6s; }
+.b9  { width: 24px;  height: 24px;  left: 42%; animation-duration: 14s; animation-delay: 7s; }
+.b10 { width: 48px;  height: 48px;  left: 82%; animation-duration: 11s; animation-delay: 2.5s; }
+
+/* দৃশ্যমানতা বাড়াতে Opacity 0.85 করা হয়েছে */
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.8) rotate(0deg);
+        opacity: 0;
+    }
+    15% { opacity: 0.85; }
+    85% { opacity: 0.85; }
+    100% {
+        transform: translateY(-115vh) scale(1.2) rotate(360deg);
+        opacity: 0;
+    }
+}

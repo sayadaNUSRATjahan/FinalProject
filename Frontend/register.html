@@ -1,35 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Journal - Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/register.css">
 </head>
+
 <body>
+    
 
     <main class="main-section">
-        
+
+        <!-- 0. ব্যাক বাটন (লগইন পেজে ফিরে যাওয়ার জন্য) -->
+        <div class="back-button-container">
+            <a href="index.html" class="back-btn" title="Back to Login">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+
         <!-- ১. হেডার কন্টেইনার (লোগো ও টাইটেল) -->
         <div class="header-container">
             <div class="logo-wrapper">
-                <i class="fa-solid fa-book-open"></i>
+                <i class="fa-solid fa-feather-pointed main-logo-icon"></i>
             </div>
             <div class="title-wrapper">
-                <h2>My Journal</h2>
-                <div class="subtitle">Create Your Account</div>
+                <h2>Create Account</h2>
+                <div class="subtitle">Create your account and start your journey</div>
             </div>
         </div>
 
         <!-- ২. ফর্ম কন্টেইনার -->
         <div class="form-container">
-            
+
             <!-- এরর বা মেসেজ দেখানোর ডিভ -->
-            <div id="user-register-error" class="error hidden" style="color: red; font-size: 14px; margin-bottom: 10px;"></div>
+            <div id="user-register-error" class="error hidden"
+                style="color: red; font-size: 14px; margin-bottom: 10px;"></div>
 
             <form id="register-form" onsubmit="event.preventDefault();">
-                
+
+                <!-- Full Name -->
                 <div class="input-field-container">
                     <label for="name">Full Name</label>
                     <div class="input-wrapper">
@@ -38,6 +50,7 @@
                     </div>
                 </div>
 
+                <!-- Email -->
                 <div class="input-field-container">
                     <label for="email">Email</label>
                     <div class="input-wrapper">
@@ -46,22 +59,71 @@
                     </div>
                 </div>
 
+                <!-- Password -->
                 <div class="input-field-container">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock input-icon"></i>
-                        <input type="password" id="password" placeholder="Enter your password">
+                        <input type="password" id="password" placeholder="Create a password">
+                        <!-- 👁️ পাসওয়ার্ড টগল আইকন -->
+                        <i class="fa-solid fa-eye toggle-password" id="toggle-password" onclick="togglePasswordVisibility('password', 'toggle-password')"></i>
                     </div>
                 </div>
 
-                <div class="action-container">
-                    <button type="button" class="login-btn" onclick="handleRegister()">Register</button>
+                <!-- Confirm Password -->
+                <div class="input-field-container">
+                    <label for="confirm-password">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="confirm-password" placeholder="Confirm your password">
+                        <!-- 👁️ কনফার্ম পাসওয়ার্ড টগল আইকন -->
+                        <i class="fa-solid fa-eye toggle-password" id="toggle-confirm-password" onclick="togglePasswordVisibility('confirm-password', 'toggle-confirm-password')"></i>
+                    </div>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="input-field-container">
+                    <label for="dob">Date of Birth</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-calendar input-icon"></i>
+                        <input type="text" id="dob" placeholder="Select your birth date" onfocus="(this.type='date')"
+                            onblur="if(!this.value)this.type='text'">
+                    </div>
+                </div>
+                <!-- Favorite Quote -->
+                <div class="input-field-container">
+                    <label for="quote">Favorite Quote <span
+                            style="font-size: 12px; color: #888;">(Optional)</span></label>
+                    <div class="quote-box">
+                        <i class="fa-solid fa-quote-left quote-icon"></i>
+                        <textarea id="quote" placeholder="Write your favorite quote..." rows="3"></textarea>
+                    </div>
+                </div>
+
+
+
+                <!-- Upload Profile Picture -->
+                <div class="input-field-container">
+                    <label for="profile-pic">Upload Profile Picture <span
+                            style="font-size: 12px; color: #888;">(Optional)</span></label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="profile-pic" accept="image/*" class="file-input">
+                        <div class="file-upload-box">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Click to upload</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="action-container" style="margin-top: 20px;">
+                    <button type="button" class="login-btn" onclick="handleRegister()">Create Account</button>
                 </div>
 
             </form>
         </div>
 
-        <!-- ৩. লগইন পেজে যাওয়ার লিংক -->
+        <!-- ৩. লগইন পেজে যাওয়ার লিংক -->
         <div class="register-container">
             <div class="register-wrapper">
                 Already have an account? <a href="index.html">Login</a>
@@ -73,4 +135,5 @@
     <script src="js/register.js"></script>
 
 </body>
+
 </html>

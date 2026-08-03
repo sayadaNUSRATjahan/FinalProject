@@ -1,64 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Journal - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
+
 <body>
+    <!-- Soft Glow Background -->
+    <div class="glow-bg"></div>
+
+    <!-- Floating Glass Bubbles Container -->
+    <div class="bubbles-container">
+        <div class="bubble b1"></div>
+        <div class="bubble b2"></div>
+        <div class="bubble b3"></div>
+        <div class="bubble b4"></div>
+        <div class="bubble b5"></div>
+        <div class="bubble b6"></div>
+        <div class="bubble b7"></div>
+        <div class="bubble b8"></div>
+        <div class="bubble b9"></div>
+        <div class="bubble b10"></div>
+    </div>
+
+    <!-- =========================
+         MAIN SECTION
+    ========================== -->
 
     <main class="main-section">
-        
-        <!-- ১. হেডার কন্টেইনার (লোগো ও টাইটেল) -->
+
+        <!-- HEADER CONTAINER -->
         <div class="header-container">
+
             <div class="logo-wrapper">
-                <i class="fa-solid fa-book-open"></i>
+                <div class="logo-circle">
+                    <i class="fa-solid fa-book-open main-book-icon"></i>
+                    <i class="fa-solid fa-pen-nib pen-nib-icon"></i>
+                </div>
             </div>
+
             <div class="title-wrapper">
                 <h2>My Journal</h2>
-                <div class="subtitle">Capture Your Moments</div>
+                <div class="subtitle">
+                    Capture Your Thoughts, Preserve Your Memories
+                </div>
             </div>
+
         </div>
 
-        <!-- ২. ফর্ম কন্টেইনার -->
+        <!-- FORM CONTAINER -->
         <div class="form-container">
-            
-            <!-- এরর মেসেজ বক্স (এখানেই টেক্সট শো করবে) -->
-            <div id="user-login-error" class="error hidden" style="color: red; font-size: 14px; margin-bottom: 10px;"></div>
+
+            <div id="user-login-error" class="error hidden"></div>
 
             <form id="login-form" onsubmit="event.preventDefault();">
-                
+
+                <!-- EMAIL -->
                 <div class="input-field-container">
-                    <label for="email">Email</label>
+                    <label for="email">Email Address</label>
                     <div class="input-wrapper">
                         <i class="fa-regular fa-envelope input-icon"></i>
-                        <input type="email" id="email" placeholder="Enter your email">
+                        <!-- name এবং autocomplete যোগ করা হয়েছে -->
+                        <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter your email">
                     </div>
                 </div>
 
+                <!-- PASSWORD -->
                 <div class="input-field-container">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock input-icon"></i>
-                        <input type="password" id="password" placeholder="Enter your password">
-                        <i class="fa-regular fa-eye toggle-password" id="toggle-password" onclick="togglePassword()"></i>
+                        <!-- name এবং autocomplete যোগ করা হয়েছে -->
+                        <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password">
+                        <i class="fa-regular fa-eye toggle-password" id="toggle-password"
+                            onclick="togglePassword()"></i>
                     </div>
                 </div>
 
+                <!-- REMEMBER ME -->
+                <div class="remember-container">
+                    <label class="remember-wrapper">
+                        <!-- name যোগ করা হয়েছে -->
+                        <input type="checkbox" id="remember-me" name="remember">
+                        <span>Remember Me</span>
+                    </label>
+                </div>
+
+                <!-- LOGIN BUTTON -->
                 <div class="action-container">
                     <button type="button" class="login-btn" onclick="handleLogin()">Login</button>
                 </div>
 
             </form>
-        </div>
 
-        <!-- ৩. রেজিস্টার কন্টেইনার -->
-        <div class="register-container">
-            <div class="register-wrapper">
-                Don't have an account? <a href="register.html">Register</a>
+            <div class="divider-container">
+                <div class="divider-line"></div>
+                <span>OR</span>
+                <div class="divider-line"></div>
             </div>
+
+            <div class="register-container">
+                <div class="register-wrapper">
+                    Don't have an account?
+                    <a href="register.html">Register</a>
+                </div>
+            </div>
+
         </div>
 
     </main>
@@ -66,4 +117,5 @@
     <script src="js/login.js"></script>
 
 </body>
+
 </html>

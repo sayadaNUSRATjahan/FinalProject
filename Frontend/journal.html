@@ -2,250 +2,199 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>MyJournal</title>
-
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/journal.css">
-
 </head>
-
 
 <body>
 
-    <section class="main-section">
+    <!-- =========================================================================
+        1. MAIN LAYOUT WRAPPER (Sidebar + Main Content Area)
+    ========================================================================== -->
+    <div class="app-layout">
 
-        <div class="box">
+        <!-- =====================================================================
+            2. SIDEBAR SECTION (Left Navigation Panel)
+        ====================================================================== -->
+        <aside class="sidebar">
+            <!-- App Brand Logo -->
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
 
+            <!-- Navigation Menu Icons -->
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="#" class="nav-item" title="Entries"><i class="fa-solid fa-book"></i></a>
+                <a href="#" class="nav-item" title="Calendar"><i class="fa-solid fa-calendar-days"></i></a>
+                <a href="#" class="nav-item" title="Analytics"><i class="fa-solid fa-chart-pie"></i></a>
+                <a href="#" class="nav-item" title="Favorites"><i class="fa-solid fa-star"></i></a>
+                <a href="#" class="nav-item" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
 
-            <!-- =========================
-                 HEADER
-            ========================== -->
-
-            <div class="header">
-
-
-                <!-- Top Row -->
-
-                <div class="header-top">
-
-
-                    <!-- Logo -->
-
-                    <h2>
-                        MyJournal
-                    </h2>
-
-
-                    <!-- Header Buttons -->
-
-                    <div class="header-btns">
-
-
-                        <button id="logout-btn">
-                            Logout
-                        </button>
+            <!-- User Profile at Bottom of Sidebar -->
+            <div class="sidebar-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Nusrat">
+                <span class="profile-name">Nusrat</span>
+            </div>
+        </aside>
 
 
-                        <button id="show-btn">
-                            + New Entry
-                        </button>
+        <!-- =====================================================================
+            3. MAIN CONTENT CONTAINER (Right Side)
+        ====================================================================== -->
+        <main class="main-content">
 
+            <!-- =================================================================
+                3.1 HEADER SECTION (Greeting, Banner & Top Controls)
+            ================================================================== -->
+            <header class="header-section">
+                <!-- Top Actions (Theme Toggle & Notifications) -->
+                <div class="header-top-actions">
+                    <button class="icon-btn" title="Toggle Theme"><i class="fa-solid fa-sun"></i></button>
+                    <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+                    <button class="logout-btn-icon" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
 
+                <!-- Welcome Banner & Quote -->
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <!-- id="user-name" যুক্ত করা হয়েছে যাতে লগইন করা ইউজারের নাম ডায়নামিক আসে -->
+                        <h3 id="user-name">Good Evening,<br>Nusrat 🌼</h3>
+                        <!-- id="date-display" যুক্ত করা হয়েছে যাতে আজকের রিয়েল-টাইম তারিখ আসে -->
+                        <p id="date-display" class="current-date">Sunday, 2 August 2026</p>
                     </div>
-
-
+                    <div class="banner-quote">
+                        <p>“You become what you write.”</p>
+                    </div>
                 </div>
 
+                <!-- Statistics Summary Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-number"><span id="day-streak-number">0</span> <i class="fa-solid fa-fire" style="color: #ff6b6b;"></i></div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number"><span id="total-entries-number">0</span> <i class="fa-solid fa-book" style="color: #845ec2;"></i></div>
+                        <div class="stat-label">Total Entries</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label-mood" id="most-mood-text">😊 Happy</div>
+                        <div class="stat-label">Most Mood</div>
+                    </div>
+                </div>
+            </header>
 
-                <!-- Welcome Section -->
 
-                <div class="welcome-section">
-
-
-                    <h3>
-                        Welcome back, Nusrat 🌼
-                    </h3>
-
-
-                    <p>
-                        How was your day?
-                    </p>
-
-
+            <!-- =================================================================
+                3.2 RECENT JOURNALS SECTION
+            ================================================================== -->
+            <section class="recent-journals-section">
+                <div class="section-title-row">
+                    <h2>Recent Journals</h2>
+                    <a href="#" class="view-all-link">View All</a>
                 </div>
 
-
-            </div>
-
-
-
-            <!-- =========================
-                 NEW JOURNAL FORM
-            ========================== -->
-
-            <div
-                id="my-form"
-                class="form-box hidden"
-            >
-
-
-                <!-- Form Header -->
-
-                <div class="form-title-row">
-
-
-                    <h3 id="form-heading">
-                        📝 New Journal Entry
-                    </h3>
-
-
-                    <span id="close-form">
-                        &times;
-                    </span>
-
-
+                <!-- Post Container -->
+                <div id="post-container" class="posts-grid">
                 </div>
-
-
-
-                <!-- Title -->
-
-                <label for="title">
-                    Title
-                </label>
-
-
-                <input
-                    type="text"
-                    id="title"
-                    placeholder="Give your day a title..."
-                >
-
-
-
-                <!-- Content -->
-
-                <label for="content">
-                    Content
-                </label>
-
-
-                <textarea
-                    id="content"
-                    placeholder="Write about your day, your thoughts, or anything you want to remember..."
-                ></textarea>
-
-
-
-                <!-- Mood -->
-
-                <label for="mood">
-                    How are you feeling?
-                </label>
-
-
-                <select id="mood">
-
-
-                    <option value="😊 Grateful">
-                        😊 Grateful
-                    </option>
-
-
-                    <option value="🚀 Excited">
-                        🚀 Excited
-                    </option>
-
-
-                    <option value="💡 Inspired">
-                        💡 Inspired
-                    </option>
-
-
-                    <option value="😌 Peaceful">
-                        😌 Peaceful
-                    </option>
-
-
-                    <option value="😴 Tired">
-                        😴 Tired
-                    </option>
-
-
-                    <option value="😔 Sad">
-                        😔 Sad
-                    </option>
-
-
-                </select>
-
-
-
-                <!-- Form Buttons -->
-
-                <div class="btn-group">
-
-
-                    <button
-                        type="button"
-                        id="cancel-btn"
-                    >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="save-btn"
-                    >
-                        Save Entry
-                    </button>
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- =========================
-                 ALL JOURNALS
-            ========================== -->
-
-            <section class="all-journals">
-
-
-                <div id="post-container"></div>
-
-
             </section>
 
+        </main>
+    </div>
 
+
+    <!-- =========================================================================
+        4. NEW JOURNAL FORM MODAL
+    ========================================================================== -->
+    <div id="my-form" class="form-modal-overlay hidden">
+        <div class="form-box">
+            <div class="form-title-row">
+                <h3 id="form-heading">📝 New Journal Entry</h3>
+                <span id="close-form" class="close-btn">&times;</span>
+            </div>
+
+            <div class="input-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Give your day a title...">
+            </div>
+
+            <div class="input-group">
+                <label for="content">Content</label>
+                <textarea id="content" placeholder="Write about your day, your thoughts, or anything you want to remember..." rows="4"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="mood">How are you feeling?</label>
+                <select id="mood">
+                    <option value="😊 Grateful">😊 Grateful</option>
+                    <option value="🚀 Excited">🚀 Excited</option>
+                    <option value="💡 Inspired">💡 Inspired</option>
+                    <option value="😌 Peaceful">😌 Peaceful</option>
+                    <option value="😴 Tired">😴 Tired</option>
+                    <option value="😔 Sad">😔 Sad</option>
+                </select>
+            </div>
+
+            <!-- Image Upload Option -->
+            <div class="input-group">
+                <label for="journal-image">Upload Image</label>
+                <input type="file" id="journal-image" accept="image/*">
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="cancel-btn" class="btn-cancel">Cancel</button>
+                <button type="button" id="save-btn" class="btn-save">Save Entry</button>
+            </div>
         </div>
-
-    </section>
-
+    </div>
 
 
-    <!-- =========================
-         UTILITY FUNCTION
-    ========================== -->
+    <!-- =========================================================================
+        5. FLOATING "+ NEW ENTRY" BUTTON
+    ========================================================================== -->
+    <button id="show-btn" class="floating-new-entry-btn">
+        <i class="fa-solid fa-plus"></i> New Entry
+    </button>
 
+
+    <!-- =========================================================================
+        6. CUSTOM DELETE CONFIRMATION MODAL
+    ========================================================================== -->
+    <div id="delete-modal" class="hidden">
+        <div class="delete-modal-content">
+            <h3>Are you sure?</h3>
+            <p>Do you really want to delete this journal entry?</p>
+            <div class="delete-modal-actions">
+                <button id="cancel-delete-btn">Cancel</button>
+                <button id="confirm-delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================================
+        7. READ MORE / JOURNAL DETAILS POPUP MODAL
+    ========================================================================== -->
+    <div id="journal-detail-modal" class="form-modal-overlay hidden">
+        <div class="form-box" style="max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 35px;">
+            <div class="form-title-row" style="margin-bottom: 10px; display: flex; justify-content: flex-end;">
+                <span id="close-detail-modal" class="close-btn" style="cursor: pointer; font-size: 26px;">&times;</span>
+            </div>
+            <div id="modal-detail-body">
+                <!-- ডাইনামিক্যালি এখানে টাইটেল, সময়, কনটেন্ট ও ছবি লোড হবে -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
     <script src="utils/CalculateTimeDifference.js"></script>
-
-
-    <!-- =========================
-         MAIN JAVASCRIPT
-    ========================== -->
-
     <script src="js/journal.js"></script>
-
-
 </body>
 
 </html>
