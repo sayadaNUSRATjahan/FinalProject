@@ -8,7 +8,7 @@ const fs = require('fs');
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // বড় ছবি বা বেস64 ডেটা হ্যান্ডেল করার জন্য লিমিট বাড়িয়ে দেওয়া হলো
 
 // আপলোড ফোল্ডার স্ট্যাটিক করা
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -48,7 +48,34 @@ db.connect((err) => {
 // 📌 API Routes
 // ==========================================
 
-// ১. ইউজার লগইন রাউট
+// ১. ইউজার রেজিস্ট্রেশন রাউট (প্রোফাইল পিকচারসহ)
+app.post('/register', upload.single('profile_pic'), (req, res) => {
+    const { name, email, password, dob, quote } = req.body;
+    const profilePic = req.file ? `uploads/${req.file.filename}` : null;
+
+    const checkUserSql = "SELECT * FROM users WHERE email = ?";
+    db.query(checkUserSql, [email], (err, results) => {
+        if (err) {
+            console.error("❌ Register Check Error:", err.message);
+            return res.status(500).json({ success: false, error: err.message });
+        }
+
+        if (results.length > 0) {
+            return res.status(400).json({ success: false, message: "Email already exists!" });
+        }
+
+        const insertSql = "INSERT INTO users (name, email, password, dob, favorite_quote, profile_pic) VALUES (?, ?, ?, ?, ?, ?)";
+        db.query(insertSql, [name, email, password, dob, quote, profilePic], (err, result) => {
+            if (err) {
+                console.error("❌ Database Insert Error:", err.message);
+                return res.status(500).json({ success: false, error: err.message });
+            }
+            res.status(201).json({ success: true, message: "User registered successfully", userId: result.insertId });
+        });
+    });
+});
+
+// ২. ইউজার লগইন রাউট
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     
@@ -67,10 +94,21 @@ app.post('/login', (req, res) => {
     });
 });
 
-// ২. সব জার্নাল গেট করা
+// ৩. নির্দিষ্ট ইউজারের সব জার্নাল গেট করা
 app.get('/getAllpost', (req, res) => {
-    const sql = "SELECT * FROM journals ORDER BY id DESC";
-    db.query(sql, (err, results) => {
+    const userId = req.query.user_id;
+
+    let sql = "SELECT * FROM journals";
+    let params = [];
+
+    if (userId) {
+        sql += " WHERE user_id = ? ORDER BY id DESC";
+        params.push(userId);
+    } else {
+        sql += " ORDER BY id DESC";
+    }
+
+    db.query(sql, params, (err, results) => {
         if (err) {
             console.error("❌ Database Fetch Error:", err.message);
             return res.status(500).json({ success: false, error: err.message });
@@ -79,8 +117,8 @@ app.get('/getAllpost', (req, res) => {
     });
 });
 
-// ৩. নতুন জার্নাল অ্যাড করা (ছবি অপশনাল)
-app.post('/addNewPost', upload.single('image'), (req, res) => {
+// ৪. নতুন জার্নাল অ্যাড করা (/createPost)
+app.post('/createPost', upload.single('image'), (req, res) => {
     const { title, content, mood, user_id } = req.body;
     const image = req.file ? `uploads/${req.file.filename}` : null;
 
@@ -94,7 +132,7 @@ app.post('/addNewPost', upload.single('image'), (req, res) => {
     });
 });
 
-// ৪. জার্নাল আপডেট করা
+// ৫. জার্নাল আপডেট করা
 app.put('/updatePost/:id', upload.single('image'), (req, res) => {
     const postId = req.params.id;
     const { title, content, mood } = req.body;
@@ -121,7 +159,7 @@ app.put('/updatePost/:id', upload.single('image'), (req, res) => {
     }
 });
 
-// ৫. জার্নাল ডিলিট করা
+// ৬. জার্নাল ডিলিট করা
 app.delete('/deletePost/:id', (req, res) => {
     const postId = req.params.id;
     const sql = "DELETE FROM journals WHERE id = ?";

@@ -55,6 +55,15 @@
         <!-- FORM CONTAINER -->
         <div class="form-container">
 
+            <!-- 🟢 Registration Success Banner (এখানে যুক্ত করা হয়েছে) -->
+            <div id="success-banner" style="display: none; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: left; display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 18px;">✅</span>
+                <div>
+                    <strong>Account created successfully.</strong><br>
+                    Please log in to continue.
+                </div>
+            </div>
+
             <div id="user-login-error" class="error hidden"></div>
 
             <form id="login-form" onsubmit="event.preventDefault();">
@@ -64,7 +73,7 @@
                     <label for="email">Email Address</label>
                     <div class="input-wrapper">
                         <i class="fa-regular fa-envelope input-icon"></i>
-                        <!-- name এবং autocomplete যোগ করা হয়েছে -->
+                        <!-- name এবং autocomplete যোগ করা হয়েছে -->
                         <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter your email">
                     </div>
                 </div>
@@ -74,7 +83,7 @@
                     <label for="password">Password</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock input-icon"></i>
-                        <!-- name এবং autocomplete যোগ করা হয়েছে -->
+                        <!-- name এবং autocomplete যোগ করা হয়েছে -->
                         <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password">
                         <i class="fa-regular fa-eye toggle-password" id="toggle-password"
                             onclick="togglePassword()"></i>
@@ -84,7 +93,7 @@
                 <!-- REMEMBER ME -->
                 <div class="remember-container">
                     <label class="remember-wrapper">
-                        <!-- name যোগ করা হয়েছে -->
+                        <!-- name যোগ করা হয়েছে -->
                         <input type="checkbox" id="remember-me" name="remember">
                         <span>Remember Me</span>
                     </label>

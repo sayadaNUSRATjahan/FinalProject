@@ -98,8 +98,8 @@ const handleRegister = async () => {
         console.log("Response from server:", data);
 
         if (res.ok) {
-            alert("Registration successful!");
-            window.location.href = "index.html"; // লগইন পেজে রিডাইরেক্ট
+            // alert বাদ দিয়ে সরাসরি লগইন পেজে রিডাইরেক্ট এবং ইউআরএলে ফ্ল্যাগ পাঠানো
+            window.location.href = "index.html?registered=true"; 
         } else {
             showError(data.message || "Registration failed! Email might already exist.");
         }

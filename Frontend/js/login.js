@@ -138,6 +138,20 @@ document.addEventListener("DOMContentLoaded", () => {
             rememberMeInput.checked = true;
         }
     }
+
+    // 📌 রেজিস্ট্রেশন সফল হয়ে রিডাইরেক্ট হয়ে আসলে সাকসেস ব্যানার দেখানোর লজিক
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+        const successBanner = document.getElementById("success-banner");
+        if (successBanner) {
+            successBanner.style.display = "flex"; // ব্যানারটি দৃশ্যমান করা
+            
+            // অপশনাল: চাইলে ৫ সেকেন্ড পর ব্যানারটি নিজে থেকেই সরিয়ে দিতে পারেন
+            setTimeout(() => {
+                successBanner.style.display = "none";
+            }, 5000);
+        }
+    }
 });
 
 const togglePassword = () => {
