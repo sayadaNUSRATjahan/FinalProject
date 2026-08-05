@@ -385,6 +385,67 @@ body {
     margin-top: 15px;
 }
 
+
+body {
+    position: relative;
+    min-height: 100vh;
+    background-color: #f7f5fb; /* আপনার ল্যাভেন্ডার বেস কালার */
+    overflow-x: hidden;
+}
+
+/* ব্যাকগ্রাউন্ডে সফট গ্লো ফোকাস তৈরি করার জন্য */
+body::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(216, 198, 235, 0.6) 0%, rgba(243, 234, 248, 0.2) 60%, transparent 100%);
+    filter: blur(50px);
+    z-index: -1;
+}
+
+/* =========================
+   3. SOFT GLOW BLOB BACKGROUND
+========================= */
+.glow-bg::before,
+.glow-bg::after {
+    content: '';
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* বাম পাশের সফট পার্পল গ্লো */
+.glow-bg::before {
+    background: rgba(154, 134, 196, 0.35);
+    top: 10%;
+    left: 15%;
+}
+
+/* ডান পাশের ল্যাভেন্ডার/গোলাপি গ্লো */
+.glow-bg::after {
+    background: rgba(200, 180, 225, 0.4);
+    bottom: 10%;
+    right: 15%;
+}
+
+
+/* রেজিস্ট্রেশন ফর্ম কার্ডের প্রিমিয়াম শ্যাডো ও গ্লো */
+.register-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(110, 89, 133, 0.1), 
+                0 0 50px rgba(216, 198, 235, 0.25);
+}
+
+
 /* =========================
    RESPONSIVE & SCROLLBAR
 ========================= */

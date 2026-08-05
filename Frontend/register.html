@@ -7,10 +7,13 @@
     <title>My Journal - Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/register.css">
+    <link rel="icon" type="image/png" href="resources/journal.png">
 </head>
 
 <body>
     
+    <!-- ব্যাকগ্রাউন্ড গ্লো ইফেক্ট ক্লাস -->
+    <div class="glow-bg"></div>
 
     <main class="main-section">
 
@@ -65,7 +68,7 @@
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock input-icon"></i>
                         <input type="password" id="password" placeholder="Create a password">
-                        <!-- 👁️ পাসওয়ার্ড টগল আইকন -->
+                        <!-- 👁️ পাসওয়ার্ড টগল আইকন -->
                         <i class="fa-solid fa-eye toggle-password" id="toggle-password" onclick="togglePasswordVisibility('password', 'toggle-password')"></i>
                     </div>
                 </div>
@@ -76,7 +79,7 @@
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock input-icon"></i>
                         <input type="password" id="confirm-password" placeholder="Confirm your password">
-                        <!-- 👁️ কনফার্ম পাসওয়ার্ড টগল আইকন -->
+                        <!-- 👁️ কনফার্ম পাসওয়ার্ড টগল আইকন -->
                         <i class="fa-solid fa-eye toggle-password" id="toggle-confirm-password" onclick="togglePasswordVisibility('confirm-password', 'toggle-confirm-password')"></i>
                     </div>
                 </div>
@@ -94,7 +97,7 @@
                 <div class="input-field-container">
                     <label for="quote">Favorite Quote <span
                             style="font-size: 12px; color: #888;">(Optional)</span></label>
-                    <div class="quote-box">
+                    <div class="input-wrapper quote-box">
                         <i class="fa-solid fa-quote-left quote-icon"></i>
                         <textarea id="quote" placeholder="Write your favorite quote..." rows="3"></textarea>
                     </div>
