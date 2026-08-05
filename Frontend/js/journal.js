@@ -62,13 +62,44 @@ let allLoadedPosts = [];
 let favoritesList = JSON.parse(localStorage.getItem("journalFavorites")) || [];
 let editPostId = null;
 let deletePostId = null;
+let isDeleteAllAction = false; // কোন মোডের ডিলিট তা ট্র্যাক করার জন্য ফ্ল্যাগ
 let currentCalendarDate = new Date();
+
+// ==========================================
+// 📌 Custom Toast Notification Helper
+// ==========================================
+const showToast = (message) => {
+    const existingToast = document.getElementById("globalToastMessage");
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement("div");
+    toast.id = "globalToastMessage";
+    toast.textContent = message;
+    toast.style.position = "fixed";
+    toast.style.bottom = "30px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+    toast.style.backgroundColor = "#4a3b32";
+    toast.style.color = "#ffffff";
+    toast.style.padding = "12px 24px";
+    toast.style.borderRadius = "8px";
+    toast.style.fontSize = "14px";
+    toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+    toast.style.zIndex = "10000";
+    toast.style.transition = "opacity 0.3s ease";
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+};
 
 // ==========================================
 // 📌 Authentication & Back Arrow Protection
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // ১. চেক করুন ইউজার লগইন করা আছে কিনা
     const loggedInUser = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
     if (!loggedInUser) {
@@ -76,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // ২. ব্যাক বাটন (Back Arrow) প্রটেকশন ও হিস্ট্রি ট্র্যাপ
     history.pushState(null, null, location.href);
     
     window.addEventListener('popstate', function () {
@@ -121,28 +151,20 @@ const loadUserProfile = () => {
             
             if (sidebarProfileName) sidebarProfileName.innerText = firstName;
             
-            // সময় অনুযায়ী গ্রিটিংস নির্ধারণ
             const currentHour = new Date().getHours();
             let greetingText = "";
             let emoji = "";
 
-            // সকাল ৫টা থেকে দুপুর ১২টা পর্যন্ত (৫ - ১১:৫৯)
             if (currentHour >= 5 && currentHour < 12) {
                 greetingText = "Good Morning";
                 emoji = "☀️";
-            } 
-            // দুপুর ১২টা থেকে বিকেল ৫টা পর্যন্ত (১২ - ১৬:৫৯)
-            else if (currentHour >= 12 && currentHour < 17) {
+            } else if (currentHour >= 12 && currentHour < 17) {
                 greetingText = "Good Afternoon";
                 emoji = "🌤️";
-            } 
-            // বিকেল ৫টা থেকে সন্ধ্যা ৭টা পর্যন্ত (১৭ - ১৮:৫৯)
-            else if (currentHour >= 17 && currentHour < 19) {
+            } else if (currentHour >= 17 && currentHour < 19) {
                 greetingText = "Good Evening";
                 emoji = "🌙";
-            } 
-            // রাত ৭টা থেকে ভোর ৫টা পর্যন্ত (১৯ - ৪:৫৯)
-            else {
+            } else {
                 greetingText = "Good Night";
                 emoji = "✨";
             }
@@ -198,40 +220,29 @@ if (saveSettingsBtn) {
                         user.profile_pic = e.target.result;
                         storageObj.setItem("loggedInUser", JSON.stringify(user));
                         loadUserProfile();
-                        alert("Settings updated successfully!");
+                        showToast("Settings updated successfully!");
                     };
                     reader.readAsDataURL(file);
                 } else {
                     storageObj.setItem("loggedInUser", JSON.stringify(user));
                     loadUserProfile();
-                    alert("Settings updated successfully!");
+                    showToast("Settings updated successfully!");
                 }
             } catch (err) {
                 console.error("Error updating settings:", err);
             }
         } else {
-            alert("No logged-in user found.");
+            showToast("No logged-in user found.");
         }
     });
 }
 
 // Delete All Journals Handler (Danger Zone)
 if (deleteAllJournalsBtn) {
-    deleteAllJournalsBtn.addEventListener("click", async () => {
-        if (confirm("Are you absolutely sure you want to delete all your journals? This cannot be undone.")) {
-            try {
-                let currentUserId = null;
-                const savedUserStr = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
-                if (savedUserStr) {
-                    const parsedUser = JSON.parse(savedUserStr);
-                    currentUserId = parsedUser.id || parsedUser.user_id;
-                }
-                
-                alert("All journals deleted successfully.");
-                loadJournals();
-            } catch (err) {
-                console.error("Error deleting all journals:", err);
-            }
+    deleteAllJournalsBtn.addEventListener("click", () => {
+        isDeleteAllAction = true; // ফ্ল্যাগ ট্রু করা হলো
+        if (deleteModal) {
+            deleteModal.classList.remove("hidden");
         }
     });
 }
@@ -535,7 +546,6 @@ if (showBtn) showBtn.addEventListener("click", openModal);
 if (closeForm) closeForm.addEventListener("click", closeModalFn);
 if (cancelBtn) cancelBtn.addEventListener("click", closeModalFn);
 
-// File input change event for image name preview
 if (imageInput) {
     imageInput.addEventListener("change", function() {
         if (fileChosenName) {
@@ -567,7 +577,7 @@ if (saveBtn) {
         const imageFile = imageInput.files[0];
 
         if (!title || !content) {
-            alert("Please fill in both title and content!");
+            showToast("Please fill in both title and content!");
             return;
         }
 
@@ -597,8 +607,15 @@ if (saveBtn) {
             if (response.ok) {
                 closeModalFn();
                 loadJournals();
+                
+                if (editPostId) {
+                    showToast("Journal edited successfully!");
+                } else {
+                    showToast("Journal saved successfully!");
+                }
+
             } else {
-                alert(result.message || "Failed to save journal");
+                showToast(result.message || "Failed to save journal");
             }
         } catch (error) {
             console.error("Error saving journal:", error);
@@ -608,30 +625,46 @@ if (saveBtn) {
 
 const promptDelete = (id) => {
     deletePostId = id;
+    isDeleteAllAction = false; // সিঙ্গেল ডিলিট মোড সেট করা হলো
     if (deleteModal) deleteModal.classList.remove("hidden");
 };
 
 if (cancelDeleteBtn) {
     cancelDeleteBtn.addEventListener("click", () => {
         deletePostId = null;
+        isDeleteAllAction = false;
         if (deleteModal) deleteModal.classList.add("hidden");
     });
 }
 
 if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener("click", async () => {
-        if (!deletePostId) return;
-        try {
-            const response = await fetch(`http://localhost:5000/deletePost/${deletePostId}`, { method: "DELETE" });
-            if (response.ok) {
+        if (isDeleteAllAction) {
+            // সব জার্নাল ডিলিটের লজিক
+            try {
                 if (deleteModal) deleteModal.classList.add("hidden");
-                deletePostId = null;
+                isDeleteAllAction = false;
+                showToast("All journals deleted successfully.");
                 loadJournals();
-            } else {
-                alert("Failed to delete journal");
+            } catch (err) {
+                console.error("Error deleting all journals:", err);
             }
-        } catch (error) {
-            console.error("Error deleting journal:", error);
+        } else {
+            // সিঙ্গেল জার্নাল ডিলিটের লজিক
+            if (!deletePostId) return;
+            try {
+                const response = await fetch(`http://localhost:5000/deletePost/${deletePostId}`, { method: "DELETE" });
+                if (response.ok) {
+                    if (deleteModal) deleteModal.classList.add("hidden");
+                    deletePostId = null;
+                    loadJournals();
+                    showToast("Journal deleted successfully!");
+                } else {
+                    showToast("Failed to delete journal");
+                }
+            } catch (error) {
+                console.error("Error deleting journal:", error);
+            }
         }
     });
 }
@@ -676,18 +709,14 @@ navItems.forEach((item, index) => {
         if (recentEntriesSection) recentEntriesSection.classList.add("hidden");
 
         if (index === 0) { 
-            // Home
             if (dashboardHeader) dashboardHeader.classList.remove("hidden");
             if (homeSection) homeSection.classList.remove("hidden");
             if (recentEntriesSection) recentEntriesSection.classList.remove("hidden");
         } else if (index === 1) { 
-            // All Entries
             if (allEntriesSection) allEntriesSection.classList.remove("hidden");
         } else if (index === 2) { 
-            // Favorites
             if (favoritesSection) favoritesSection.classList.remove("hidden");
         } else if (index === 3) { 
-            // Settings
             if (settingsSection) settingsSection.classList.remove("hidden");
         }
     });

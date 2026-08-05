@@ -98,7 +98,7 @@ const handleRegister = async () => {
         console.log("Response from server:", data);
 
         if (res.ok) {
-            // alert বাদ দিয়ে সরাসরি লগইন পেজে রিডাইরেক্ট এবং ইউআরএলে ফ্ল্যাগ পাঠানো
+            // কোনো অ্যালার্ট ছাড়াই সরাসরি লগইন পেজে রিডাইরেক্ট
             window.location.href = "index.html?registered=true"; 
         } else {
             showError(data.message || "Registration failed! Email might already exist.");
@@ -110,7 +110,7 @@ const handleRegister = async () => {
     }
 };
 
-// পাসওয়ার্ড শো/হাইডের ফাংশন (এটি আলাদাভাবে বাইরে থাকবে)
+// পাসওয়ার্ড শো/হাইডের ফাংশন
 function togglePasswordVisibility(inputId, iconId) {
     const inputField = document.getElementById(inputId);
     const toggleIcon = document.getElementById(iconId);
@@ -118,10 +118,10 @@ function togglePasswordVisibility(inputId, iconId) {
     if (inputField.type === "password") {
         inputField.type = "text";
         toggleIcon.classList.remove("fa-eye");
-        toggleIcon.classList.add("fa-eye-slash"); // চোখ কাটা আইকন আসবে
+        toggleIcon.classList.add("fa-eye-slash");
     } else {
         inputField.type = "password";
         toggleIcon.classList.remove("fa-eye-slash");
-        toggleIcon.classList.add("fa-eye"); // সাধারণ চোখ আইকন আসবে
+        toggleIcon.classList.add("fa-eye");
     }
 }
