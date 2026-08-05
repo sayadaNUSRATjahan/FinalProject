@@ -1,4 +1,3 @@
-// সিলেক্টরসমূহ
 const postContainer = document.getElementById("post-container");
 const allPostsContainer = document.getElementById("all-posts-container");
 const favoritesPostsContainer = document.getElementById("favorites-posts-container");

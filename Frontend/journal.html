@@ -312,6 +312,16 @@
         </div>
     </div>
 
+    <!-- ক্যাশ বা ব্যাক বাটন সিকিউরিটি হ্যান্ডলার স্ক্রিপ্ট -->
+    <script>
+        window.addEventListener('pageshow', function (event) {
+            // যদি পেজটি ব্রাউজারের ব্যাক-ফরোয়ার্ড ক্যাশ (bfcache) থেকে লোড হয়, তবে রিফ্রেশ করে সিকিউরিটি চেক ট্রিগার করবে
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
+
     <script src="utils/CalculateTimeDifference.js"></script>
     <script src="js/journal.js"></script>
 </body>
