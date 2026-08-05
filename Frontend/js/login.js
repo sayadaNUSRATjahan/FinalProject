@@ -22,7 +22,7 @@ const fetchUserInfo = async (user) => {
         });
 
         const data = await res.json();
-        return data; // এটি সরাসরি পুরো রেসপন্স অবজেক্ট ({ success, message, user }) রিটার্ন করবে
+        return data; 
     } 
     catch (err) {
         console.error("Error connecting to the server:", err);
@@ -93,7 +93,7 @@ const handleLogin = async (event) => {
             errorElement.classList.add("hidden");
         }
 
-        const loggedUser = responseData.user; // ব্যাকএন্ড থেকে পাঠানো ইউজার ডেটা
+        const loggedUser = responseData.user; 
 
         // 📌 Remember Me চেকের ওপর ভিত্তি করে ডেটা সেভ
         if (rememberMeInput && rememberMeInput.checked) {
@@ -111,49 +111,8 @@ const handleLogin = async (event) => {
 };
 
 // ==========================================
-// ৪. ইভেন্ট লিসেনার সেটআপ এবং অটো-ফিল চেক
+// ৪. পাসওয়ার্ড শো/হাইডের ফাংশন
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('email')?.addEventListener('input', clearErrorOnInput);
-    document.getElementById('password')?.addEventListener('input', clearErrorOnInput);
-
-    // ফর্ম সাবমিশনের ইভেন্ট কানেক্ট করা (HTML-এ যদি onsubmit বাEventListener না থাকে)
-    const loginForm = document.querySelector('form') || document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-
-    // 📌 পেজ লোড হওয়ার সময় লোকাল স্টোরেজে ইমেইল/পাসওয়ার্ড থাকলে অটো-ফিল করা
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const rememberMeInput = document.getElementById('remember-me');
-
-    const savedEmail = localStorage.getItem("savedEmail");
-    const savedPassword = localStorage.getItem("savedPassword");
-
-    if (savedEmail && savedPassword && emailInput && passwordInput) {
-        emailInput.value = savedEmail;
-        passwordInput.value = savedPassword;
-        if (rememberMeInput) {
-            rememberMeInput.checked = true;
-        }
-    }
-
-    // 📌 রেজিস্ট্রেশন সফল হয়ে রিডাইরেক্ট হয়ে আসলে সাকসেস ব্যানার দেখানোর লজিক
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('registered') === 'true') {
-        const successBanner = document.getElementById("success-banner");
-        if (successBanner) {
-            successBanner.style.display = "flex"; // ব্যানারটি দৃশ্যমান করা
-            
-            // অপশনাল: চাইলে ৫ সেকেন্ড পর ব্যানারটি নিজে থেকেই সরিয়ে দিতে পারেন
-            setTimeout(() => {
-                successBanner.style.display = "none";
-            }, 5000);
-        }
-    }
-});
-
 const togglePassword = () => {
     const passwordInput = document.getElementById('password');
     const toggleIcon = document.getElementById('toggle-password');
@@ -174,3 +133,60 @@ const togglePassword = () => {
         }
     }
 };
+
+// ==========================================
+// ৫. সমস্ত DOMContentLoaded লজিক একত্রিত করা হলো
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberMeInput = document.getElementById('remember-me');
+    
+    // ইনপুট দিলে এরর মুছে ফেলা
+    emailInput?.addEventListener('input', clearErrorOnInput);
+    passwordInput?.addEventListener('input', clearErrorOnInput);
+
+    // ফর্ম সাবমিশন ইভেন্ট কানেক্ট করা
+    const loginForm = document.querySelector('form') || document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // 📌 অটো-ফিল চেক (Remember Me)
+    const savedEmail = localStorage.getItem("savedEmail");
+    const savedPassword = localStorage.getItem("savedPassword");
+
+    if (savedEmail && savedPassword && emailInput && passwordInput) {
+        emailInput.value = savedEmail;
+        passwordInput.value = savedPassword;
+        if (rememberMeInput) {
+            rememberMeInput.checked = true;
+        }
+    }
+
+    // 📌 রেজিস্ট্রেশন সফল হয়ে আসলে সাকসেস মেসেজ দেখানোর লজিক
+    // (আপনার HTML এ মেসেজ বক্সের আইডি যদি success-message হয়, তবে নিচকার আইডি পরিবর্তন করে নেবেন)
+    const successBox = document.getElementById('success-banner') || document.querySelector('.success-message');
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('registered') === 'true') {
+        if (successBox) {
+            successBox.style.display = 'block'; // বা 'flex' আপনার ডিজাইন অনুযায়ী
+        }
+    } else {
+        if (successBox) {
+            successBox.style.display = 'none'; // নরমাল অবস্থায় হাইড থাকবে
+        }
+    }
+
+    // ইউজার লিখতে শুরু করলেই মেসেজটি গায়েব হয়ে যাবে এবং URL ক্লিন হবে
+    const hideSuccessMessage = () => {
+        if (successBox && (successBox.style.display === 'block' || successBox.style.display === 'flex')) {
+            successBox.style.display = 'none';
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    };
+
+    if (emailInput) emailInput.addEventListener('input', hideSuccessMessage);
+    if (passwordInput) passwordInput.addEventListener('input', hideSuccessMessage);
+});

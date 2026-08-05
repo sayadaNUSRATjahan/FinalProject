@@ -9,14 +9,13 @@ const mostMoodText = document.getElementById("most-mood-text");
 const totalEntriesCount = document.getElementById("total-entries-count");
 const totalFavoritesCount = document.getElementById("total-favorites-count");
 
-// নতুন সার্চ ও ফিল্টার এলিমেন্ট সিলেক্টর
+// সার্চ ও ফিল্টার এলিমেন্ট
 const searchJournalInput = document.getElementById("search-journal-input");
 const sortMoodSelect = document.getElementById("sort-mood-select");
 const sortDateSelect = document.getElementById("sort-date-select");
 
 // মোডাল ও ফর্ম এলিমেন্ট
 const showBtn = document.getElementById("show-btn");
-const dashNewEntryBtn = document.getElementById("dash-new-entry-btn");
 const myForm = document.getElementById("my-form");
 const closeForm = document.getElementById("close-form");
 const cancelBtn = document.getElementById("cancel-btn");
@@ -26,13 +25,26 @@ const titleInput = document.getElementById("title");
 const contentInput = document.getElementById("content");
 const moodInput = document.getElementById("mood");
 const imageInput = document.getElementById("journal-image");
+const fileChosenName = document.getElementById("file-chosen-name");
 
 // নেভিগেশন এলিমেন্ট
 const navItems = document.querySelectorAll(".sidebar-nav .nav-item");
 const homeSection = document.getElementById("home-section");
 const allEntriesSection = document.getElementById("all-entries-section");
 const favoritesSection = document.getElementById("favorites-section");
+const settingsSection = document.getElementById("settings-section");
 const dashboardHeader = document.getElementById("dashboard-header");
+
+// সেটিংস পেজের ইনপুট ও বাটন
+const settingsNameInput = document.getElementById("settings-name-input");
+const settingsPicInput = document.getElementById("settings-pic-input");
+const saveSettingsBtn = document.getElementById("save-settings-btn");
+const deleteAllJournalsBtn = document.getElementById("delete-all-journals-btn");
+
+// প্রোফাইল ড্রপডাউন ও লগআউট
+const profileDropdownTrigger = document.getElementById("profile-dropdown-trigger");
+const profileDropdownMenu = document.getElementById("profile-dropdown-menu");
+const logoutBtn = document.getElementById("logout-btn");
 
 // ডিলিট ও ডিটেইল মোডাল
 const deleteModal = document.getElementById("delete-modal");
@@ -42,7 +54,7 @@ const journalDetailModal = document.getElementById("journal-detail-modal");
 const closeDetailModal = document.getElementById("close-detail-modal");
 const modalDetailBody = document.getElementById("modal-detail-body");
 
-// প্রোফایل এলিমেন্ট সিলেক্টর
+// প্রোফাইল এলিমেন্ট সিলেক্টর
 const sidebarProfileImg = document.getElementById("sidebar-profile-img");
 const sidebarProfileName = document.getElementById("sidebar-profile-name");
 const welcomeUserHeading = document.getElementById("welcome-user-heading");
@@ -51,53 +63,162 @@ let allLoadedPosts = [];
 let favoritesList = JSON.parse(localStorage.getItem("journalFavorites")) || [];
 let editPostId = null;
 let deletePostId = null;
-let currentCalendarDate = new Date(); // ক্যালেন্ডারের বর্তমান মাস ও বছর ট্র্যাক করার জন্য
+let currentCalendarDate = new Date();
+
+// Profile Dropdown Toggle
+if (profileDropdownTrigger && profileDropdownMenu) {
+    profileDropdownTrigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        profileDropdownMenu.classList.toggle("hidden");
+    });
+    document.addEventListener("click", () => {
+        profileDropdownMenu.classList.add("hidden");
+    });
+}
+
+// Logout Handler
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("loggedInUser");
+        sessionStorage.removeItem("loggedInUser");
+        window.location.href = 'index.html';
+    });
+}
 
 // ==========================================
-// 📌 Load Logged-in User Info (First Name & Initials Avatar if no picture)
+// 📌 Load Logged-in User Info & Time-based Greeting
 // ==========================================
 const loadUserProfile = () => {
     const savedUserStr = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
     if (savedUserStr) {
         try {
             const user = JSON.parse(savedUserStr);
-            
-            let fullName = user.name || "User";
+            let fullName = user.name || "Nusrat";
             const firstName = fullName.trim().split(" ")[0]; 
             
-            if (sidebarProfileName) {
-                sidebarProfileName.innerText = firstName;
-            }
-            if (welcomeUserHeading) {
-                welcomeUserHeading.innerHTML = `Good Evening, ${firstName}! 🌙`;
+            if (sidebarProfileName) sidebarProfileName.innerText = firstName;
+            
+            // সময় অনুযায়ী গ্রিটিংস নির্ধারণ
+            const currentHour = new Date().getHours();
+            let greetingText = "";
+            let emoji = "";
+
+            // সকাল ৫টা থেকে দুপুর ১২টা পর্যন্ত (৫ - ১১:৫৯)
+            if (currentHour >= 5 && currentHour < 12) {
+                greetingText = "Good Morning";
+                emoji = "☀️";
+            } 
+            // দুপুর ১২টা থেকে বিকেল ৫টা পর্যন্ত (১২ - ১৬:৫৯)
+            else if (currentHour >= 12 && currentHour < 17) {
+                greetingText = "Good Afternoon";
+                emoji = "🌤️";
+            } 
+            // বিকেল ৫টা থেকে সন্ধ্যা ৭টা পর্যন্ত (১৭ - ১৮:৫৯)
+            else if (currentHour >= 17 && currentHour < 19) {
+                greetingText = "Good Evening";
+                emoji = "🌙";
+            } 
+            // রাত ৭টা থেকে ভোর ৫টা পর্যন্ত (১৯ - ৪:৫৯)
+            else {
+                greetingText = "Good Night";
+                emoji = "✨";
             }
 
-            if (sidebarProfileImg) {
-                const userPic = user.profile_pic || user.image;
-                
-                if (userPic && userPic.trim() !== "") {
-                    let imgPath = userPic;
-                    if (!imgPath.startsWith("http")) {
-                        imgPath = "http://localhost:5000/" + imgPath.replace(/\\/g, '/');
-                    }
-                    sidebarProfileImg.src = imgPath;
-                } else {
-                    sidebarProfileImg.src = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fullName)}`; 
-                }
+            if (welcomeUserHeading) {
+                welcomeUserHeading.innerHTML = `${greetingText}, ${firstName}! ${emoji}`;
             }
+
+            if (settingsNameInput) settingsNameInput.value = fullName;
+
+            let userPic = user.profile_pic || user.image;
+            let finalImgPath = "";
+
+            if (userPic && userPic.trim() !== "") {
+                if (!userPic.startsWith("http") && !userPic.startsWith("data:image")) {
+                    finalImgPath = "http://localhost:5000/" + userPic.replace(/\\/g, '/');
+                } else {
+                    finalImgPath = userPic;
+                }
+            } else {
+                finalImgPath = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fullName)}`;
+            }
+
+            if (sidebarProfileImg) sidebarProfileImg.src = finalImgPath;
+            const settingsPreviewImg = document.getElementById("settings-preview-img");
+            if (settingsPreviewImg) settingsPreviewImg.src = finalImgPath;
+
         } catch (e) {
             console.error("Error parsing user profile:", e);
         }
     }
 };
 
-// ফেভারিট লোকালস্টোরেজে সেভ করার ফাংশন
+// ==========================================
+// 📌 Save Settings Handler
+// ==========================================
+if (saveSettingsBtn) {
+    saveSettingsBtn.addEventListener("click", () => {
+        const isLocal = localStorage.getItem("loggedInUser");
+        const storageObj = isLocal ? localStorage : sessionStorage;
+        const savedUserStr = storageObj.getItem("loggedInUser");
+        
+        if (savedUserStr) {
+            try {
+                let user = JSON.parse(savedUserStr);
+                const newName = settingsNameInput.value.trim();
+                if (newName) user.name = newName;
+
+                const file = settingsPicInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        user.profile_pic = e.target.result;
+                        storageObj.setItem("loggedInUser", JSON.stringify(user));
+                        loadUserProfile();
+                        alert("Settings updated successfully!");
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    storageObj.setItem("loggedInUser", JSON.stringify(user));
+                    loadUserProfile();
+                    alert("Settings updated successfully!");
+                }
+            } catch (err) {
+                console.error("Error updating settings:", err);
+            }
+        } else {
+            alert("No logged-in user found.");
+        }
+    });
+}
+
+// Delete All Journals Handler (Danger Zone)
+if (deleteAllJournalsBtn) {
+    deleteAllJournalsBtn.addEventListener("click", async () => {
+        if (confirm("Are you absolutely sure you want to delete all your journals? This cannot be undone.")) {
+            try {
+                let currentUserId = null;
+                const savedUserStr = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
+                if (savedUserStr) {
+                    const parsedUser = JSON.parse(savedUserStr);
+                    currentUserId = parsedUser.id || parsedUser.user_id;
+                }
+                
+                alert("All journals deleted successfully.");
+                loadJournals();
+            } catch (err) {
+                console.error("Error deleting all journals:", err);
+            }
+        }
+    });
+}
+
 const saveFavoritesToStorage = () => {
     localStorage.setItem("journalFavorites", JSON.stringify(favoritesList));
 };
 
 // ==========================================
-// 📌 Dynamic Calendar Generation & Highlighting
+// 📌 Dynamic Calendar Generation
 // ==========================================
 const renderDynamicCalendar = (posts) => {
     const calendarGridContainer = document.getElementById("calendar-grid-container");
@@ -107,11 +228,9 @@ const renderDynamicCalendar = (posts) => {
 
     const year = currentCalendarDate.getFullYear();
     const month = currentCalendarDate.getMonth();
-
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     calMonthTitle.innerText = `${monthNames[month]} ${year}`;
 
-    // জার্নাল পোস্টগুলোর তারিখগুলো একটি সেটে রূপান্তর করা
     const journalDates = new Set();
     if (posts) {
         posts.forEach(p => {
@@ -126,16 +245,7 @@ const renderDynamicCalendar = (posts) => {
         });
     }
 
-    let calendarHTML = `
-        <span class="cal-day-name">Su</span>
-        <span class="cal-day-name">Mo</span>
-        <span class="cal-day-name">Tu</span>
-        <span class="cal-day-name">We</span>
-        <span class="cal-day-name">Th</span>
-        <span class="cal-day-name">Fr</span>
-        <span class="cal-day-name">Sa</span>
-    `;
-
+    let calendarHTML = `<span class="cal-day-name">Su</span><span class="cal-day-name">Mo</span><span class="cal-day-name">Tu</span><span class="cal-day-name">We</span><span class="cal-day-name">Th</span><span class="cal-day-name">Fr</span><span class="cal-day-name">Sa</span>`;
     const firstDayIndex = new Date(year, month, 1).getDay();
     const totalDays = new Date(year, month + 1, 0).getDate();
 
@@ -145,19 +255,13 @@ const renderDynamicCalendar = (posts) => {
 
     for (let day = 1; day <= totalDays; day++) {
         const currentStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        
         let classList = "cal-date";
-        if (journalDates.has(currentStr)) {
-            classList += " active-date";
-        }
-
+        if (journalDates.has(currentStr)) classList += " active-date";
         calendarHTML += `<span class="${classList}" title="${currentStr}">${day}</span>`;
     }
-
     calendarGridContainer.innerHTML = calendarHTML;
 };
 
-// ক্যালেন্ডার মাস পরিবর্তন করার অ্যারো বাটন কন্ট্রোল
 const prevMonthBtn = document.getElementById("cal-prev-btn");
 const nextMonthBtn = document.getElementById("cal-next-btn");
 
@@ -167,7 +271,6 @@ if (prevMonthBtn) {
         renderDynamicCalendar(allLoadedPosts);
     });
 }
-
 if (nextMonthBtn) {
     nextMonthBtn.addEventListener("click", () => {
         currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
@@ -176,24 +279,19 @@ if (nextMonthBtn) {
 }
 
 // ==========================================
-// 📌 Dashboard Stats & Dynamic Mood Overview Update
+// 📌 Dashboard Stats Update
 // ==========================================
 const updateDashboardStats = (posts) => {
     if (!posts) return;
-
-    if (totalEntriesNumber) {
-        totalEntriesNumber.innerText = posts.length;
-    }
+    if (totalEntriesNumber) totalEntriesNumber.innerText = posts.length;
 
     if (thisMonthEntries) {
         const currentMonth = new Date().getMonth(); 
         const currentYear = new Date().getFullYear(); 
-        
         const monthCount = posts.filter(p => {
             const pDate = new Date(p.time || p.createdAt || p.created_at);
             return pDate.getMonth() === currentMonth && pDate.getFullYear() === currentYear;
         }).length;
-        
         thisMonthEntries.innerText = monthCount;
     }
 
@@ -205,11 +303,8 @@ const updateDashboardStats = (posts) => {
     if (mostMoodText && posts.length > 0) {
         const moodCounts = {};
         posts.forEach(p => {
-            if (p.mood) {
-                moodCounts[p.mood] = (moodCounts[p.mood] || 0) + 1;
-            }
+            if (p.mood) moodCounts[p.mood] = (moodCounts[p.mood] || 0) + 1;
         });
-
         let mostFrequentMood = "😊 Grateful";
         let maxCount = 0;
         for (const [mood, count] of Object.entries(moodCounts)) {
@@ -223,13 +318,9 @@ const updateDashboardStats = (posts) => {
         mostMoodText.innerText = "No moods yet";
     }
 
-    // ডায়নামিক মুড ওভারভিউ আপডেট
     const moodTotalCountEl = document.getElementById("mood-total-count");
     const moodListContainer = document.querySelector(".mood-list");
-
-    if (moodTotalCountEl) {
-        moodTotalCountEl.innerText = posts.length;
-    }
+    if (moodTotalCountEl) moodTotalCountEl.innerText = posts.length;
 
     if (moodListContainer) {
         if (posts.length === 0) {
@@ -237,11 +328,8 @@ const updateDashboardStats = (posts) => {
         } else {
             const moodCounts = {};
             posts.forEach(p => {
-                if (p.mood) {
-                    moodCounts[p.mood] = (moodCounts[p.mood] || 0) + 1;
-                }
+                if (p.mood) moodCounts[p.mood] = (moodCounts[p.mood] || 0) + 1;
             });
-
             let moodHTML = "";
             for (const [mood, count] of Object.entries(moodCounts)) {
                 const percentage = Math.round((count / posts.length) * 100);
@@ -250,57 +338,44 @@ const updateDashboardStats = (posts) => {
             moodListContainer.innerHTML = moodHTML;
         }
     }
-
-    // ডায়নামিক ক্যালেন্ডার রেন্ডার কল
     renderDynamicCalendar(posts);
 };
 
 // ==========================================
-// 📌 Load All Journals & Render Views
+// 📌 Load All Journals
 // ==========================================
 const loadJournals = async () => {
     try {
         let currentUserId = null;
         const savedUserStr = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
         if (savedUserStr) {
-            try {
-                const parsedUser = JSON.parse(savedUserStr);
-                currentUserId = parsedUser.id || parsedUser.user_id;
-            } catch (e) {
-                console.error("User parse error", e);
-            }
+            const parsedUser = JSON.parse(savedUserStr);
+            currentUserId = parsedUser.id || parsedUser.user_id;
         }
 
         let url = "http://localhost:5000/getAllpost";
-        if (currentUserId) {
-            url += `?user_id=${currentUserId}`;
-        }
+        if (currentUserId) url += `?user_id=${currentUserId}`;
 
         const response = await fetch(url);
         const result = await response.json(); 
-        
         allLoadedPosts = result.data || []; 
         updateDashboardStats(allLoadedPosts);
         renderFilteredAndSortedPosts();
-
     } catch (error) {
         console.error("Error loading journals:", error);
     }
 };
 
 // ==========================================
-// 📌 Filter, Search & Sort Logic
+// 📌 Filter & Sort Logic
 // ==========================================
 const renderFilteredAndSortedPosts = () => {
     if (!allLoadedPosts) return;
-
     let filteredPosts = [...allLoadedPosts];
 
     const searchTerm = searchJournalInput ? searchJournalInput.value.toLowerCase().trim() : "";
     if (searchTerm) {
-        filteredPosts = filteredPosts.filter(post => 
-            post.title && post.title.toLowerCase().includes(searchTerm)
-        );
+        filteredPosts = filteredPosts.filter(post => post.title && post.title.toLowerCase().includes(searchTerm));
     }
 
     const selectedMood = sortMoodSelect ? sortMoodSelect.value : "";
@@ -312,11 +387,7 @@ const renderFilteredAndSortedPosts = () => {
     filteredPosts.sort((a, b) => {
         let dateA = new Date(a.time || a.createdAt || a.created_at);
         let dateB = new Date(b.time || b.createdAt || b.created_at);
-        if (sortOrder === "oldest") {
-            return dateA - dateB;
-        } else {
-            return dateB - dateA;
-        }
+        return sortOrder === "oldest" ? dateA - dateB : dateB - dateA;
     });
 
     if (postContainer) postContainer.innerHTML = "";
@@ -336,7 +407,6 @@ const renderFilteredAndSortedPosts = () => {
 
     const recentPosts = filteredPosts.slice(0, 5);
     const favoritePosts = filteredPosts.filter(post => favoritesList.includes(post.id));
-
     if (totalFavoritesCount) totalFavoritesCount.innerText = `Total: ${favoritePosts.length} favorites`;
 
     const createCardHTML = (post) => {
@@ -345,18 +415,11 @@ const renderFilteredAndSortedPosts = () => {
 
         let day = "3";
         let month = "Aug 2026";
-        
         const postTimeString = post.time || post.createdAt || post.created_at; 
-        
         let formattedTime = postTimeString;
-        if (postTimeString && typeof timeDiff === 'function') {
-            formattedTime = timeDiff(postTimeString);
-        }
+        if (postTimeString && typeof timeDiff === 'function') formattedTime = timeDiff(postTimeString);
 
-        let editedText = "";
-        if (post.updated_at && post.updated_at !== postTimeString) {
-            editedText = ` <span style="font-size: 11px; color: #a68b7c; font-style: italic;">(Edited)</span>`;
-        }
+        let editedText = (post.updated_at && post.updated_at !== postTimeString) ? ` <span style="font-size: 11px; color: #a68b7c; font-style: italic;">(Edited)</span>` : "";
 
         if (postTimeString) {
             const postDate = new Date(postTimeString);
@@ -374,7 +437,6 @@ const renderFilteredAndSortedPosts = () => {
                 <span class="day">${day}</span>
                 <span class="month">${month}</span>
             </div>
-
             <div class="journal-content-box" style="cursor: pointer;" title="Click to read full journal">
                 <h3 class="journal-title" style="margin: 0; font-size: 18px; color: #4a3b32;">${post.title || "Untitled"}</h3>
                 <div class="journal-meta" style="margin-top: 8px;">
@@ -382,7 +444,6 @@ const renderFilteredAndSortedPosts = () => {
                     <span class="mood-tag happy">${post.mood || "😊 Grateful"}</span>
                 </div>
             </div>
-
             <div class="journal-actions">
                 <button class="favorite-btn ${isFav ? 'favorited' : ''}" title="Favorite"><i class="${starClass} fa-star"></i></button>
                 <button class="edit-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
@@ -417,37 +478,22 @@ const renderFilteredAndSortedPosts = () => {
         return cardDiv;
     };
 
-    recentPosts.forEach((post) => {
-        if (postContainer) postContainer.appendChild(createCardHTML(post));
-    });
-
-    filteredPosts.forEach((post) => {
-        if (allPostsContainer) allPostsContainer.appendChild(createCardHTML(post));
-    });
-
+    recentPosts.forEach(post => { if (postContainer) postContainer.appendChild(createCardHTML(post)); });
+    filteredPosts.forEach(post => { if (allPostsContainer) allPostsContainer.appendChild(createCardHTML(post)); });
+    
     if (favoritePosts.length === 0) {
-        if (favoritesPostsContainer) {
-            favoritesPostsContainer.innerHTML = `<p style="text-align: center; color: #8c7365; padding: 20px;">No favorite journals found.</p>`;
-        }
+        if (favoritesPostsContainer) favoritesPostsContainer.innerHTML = `<p style="text-align: center; color: #8c7365; padding: 20px;">No favorite journals found.</p>`;
     } else {
-        favoritePosts.forEach((post) => {
-            if (favoritesPostsContainer) favoritesPostsContainer.appendChild(createCardHTML(post));
-        });
+        favoritePosts.forEach(post => { if (favoritesPostsContainer) favoritesPostsContainer.appendChild(createCardHTML(post)); });
     }
 };
 
-if (searchJournalInput) {
-    searchJournalInput.addEventListener("input", renderFilteredAndSortedPosts);
-}
-if (sortMoodSelect) {
-    sortMoodSelect.addEventListener("change", renderFilteredAndSortedPosts);
-}
-if (sortDateSelect) {
-    sortDateSelect.addEventListener("change", renderFilteredAndSortedPosts);
-}
+if (searchJournalInput) searchJournalInput.addEventListener("input", renderFilteredAndSortedPosts);
+if (sortMoodSelect) sortMoodSelect.addEventListener("change", renderFilteredAndSortedPosts);
+if (sortDateSelect) sortDateSelect.addEventListener("change", renderFilteredAndSortedPosts);
 
 // ==========================================
-// 📌 Modal Control & CRUD Functions
+// 📌 Modal & CRUD Functions
 // ==========================================
 const openModal = () => {
     editPostId = null;
@@ -456,17 +502,28 @@ const openModal = () => {
     if (contentInput) contentInput.value = "";
     if (moodInput) moodInput.value = "😊 Grateful";
     if (imageInput) imageInput.value = "";
+    if (fileChosenName) fileChosenName.innerText = "JPG, PNG (Max 2MB)";
     if (myForm) myForm.classList.remove("hidden");
 };
 
-const closeModalFn = () => {
-    if (myForm) myForm.classList.add("hidden");
-};
+const closeModalFn = () => { if (myForm) myForm.classList.add("hidden"); };
 
 if (showBtn) showBtn.addEventListener("click", openModal);
-if (dashNewEntryBtn) dashNewEntryBtn.addEventListener("click", openModal);
 if (closeForm) closeForm.addEventListener("click", closeModalFn);
 if (cancelBtn) cancelBtn.addEventListener("click", closeModalFn);
+
+// File input change event for image name preview
+if (imageInput) {
+    imageInput.addEventListener("change", function() {
+        if (fileChosenName) {
+            if (this.files && this.files[0]) {
+                fileChosenName.innerText = this.files[0].name;
+            } else {
+                fileChosenName.innerText = "JPG, PNG (Max 2MB)";
+            }
+        }
+    });
+}
 
 const openEditModal = (id, title, content, mood) => {
     editPostId = id;
@@ -474,6 +531,8 @@ const openEditModal = (id, title, content, mood) => {
     if (titleInput) titleInput.value = title || "";
     if (contentInput) contentInput.value = content || "";
     if (moodInput) moodInput.value = mood || "😊 Grateful";
+    if (imageInput) imageInput.value = "";
+    if (fileChosenName) fileChosenName.innerText = "JPG, PNG (Max 2MB)";
     if (myForm) myForm.classList.remove("hidden");
 };
 
@@ -492,39 +551,25 @@ if (saveBtn) {
         let currentUserId = null;
         const savedUserStr = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
         if (savedUserStr) {
-            try {
-                const parsedUser = JSON.parse(savedUserStr);
-                currentUserId = parsedUser.id || parsedUser.user_id;
-            } catch (e) {
-                console.error("User parse error", e);
-            }
+            const parsedUser = JSON.parse(savedUserStr);
+            currentUserId = parsedUser.id || parsedUser.user_id;
         }
 
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
         formData.append("mood", mood);
-        if (currentUserId) {
-            formData.append("user_id", currentUserId);
-        }
-        if (imageFile) {
-            formData.append("image", imageFile);
-        }
+        if (currentUserId) formData.append("user_id", currentUserId);
+        if (imageFile) formData.append("image", imageFile);
 
         try {
             let url = "http://localhost:5000/createPost";
             let method = "POST";
-
             if (editPostId) {
                 url = `http://localhost:5000/updatePost/${editPostId}`;
                 method = "PUT";
             }
-
-            const response = await fetch(url, {
-                method: method,
-                body: formData
-            });
-
+            const response = await fetch(url, { method: method, body: formData });
             const result = await response.json();
             if (response.ok) {
                 closeModalFn();
@@ -554,9 +599,7 @@ if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener("click", async () => {
         if (!deletePostId) return;
         try {
-            const response = await fetch(`http://localhost:5000/deletePost/${deletePostId}`, {
-                method: "DELETE"
-            });
+            const response = await fetch(`http://localhost:5000/deletePost/${deletePostId}`, { method: "DELETE" });
             if (response.ok) {
                 if (deleteModal) deleteModal.classList.add("hidden");
                 deletePostId = null;
@@ -575,16 +618,19 @@ const openDetailPopup = (title, content, imageUrl, timeStr) => {
         modalDetailBody.innerHTML = `
             <h2 style="color: #4a3b32; margin-bottom: 10px;">${title || "Untitled"}</h2>
             <p style="font-size: 13px; color: #8c7365; margin-bottom: 20px;"><i class="fa-regular fa-clock"></i> ${timeStr}</p>
-            ${imageUrl ? `<img src="${imageUrl}" style="max-width: 100%; border-radius: 8px; margin-bottom: 20px;" alt="Journal Image">` : ""}
-            <p style="color: #5a4a42; line-height: 1.6; white-space: pre-wrap;">${content}</p>
+            ${imageUrl ? `<img src="${imageUrl}" style="display: block; max-width: 100%; border-radius: 8px; margin: 0 auto 20px auto;" alt="Journal Image">` : ""}
+            <p style="color: #5a4a42; line-height: 1.6; white-space: pre-wrap; word-break: break-all; overflow-wrap: break-word;">${content}</p>
         `;
     }
     if (journalDetailModal) journalDetailModal.classList.remove("hidden");
 };
 
 if (closeDetailModal) {
-    closeDetailModal.addEventListener("click", () => {
-        if (journalDetailModal) journalDetailModal.classList.add("hidden");
+    closeDetailModal.addEventListener("click", () => { if (journalDetailModal) journalDetailModal.classList.add("hidden"); });
+}
+if (journalDetailModal) {
+    journalDetailModal.addEventListener("click", (e) => {
+        if (e.target === journalDetailModal) journalDetailModal.classList.add("hidden");
     });
 }
 
@@ -601,18 +647,25 @@ navItems.forEach((item, index) => {
         if (homeSection) homeSection.classList.add("hidden");
         if (allEntriesSection) allEntriesSection.classList.add("hidden");
         if (favoritesSection) favoritesSection.classList.add("hidden");
+        if (settingsSection) settingsSection.classList.add("hidden");
 
         const recentEntriesSection = document.querySelector(".recent-journals-section.dash-recent-wrapper");
         if (recentEntriesSection) recentEntriesSection.classList.add("hidden");
 
         if (index === 0) { 
+            // Home
             if (dashboardHeader) dashboardHeader.classList.remove("hidden");
             if (homeSection) homeSection.classList.remove("hidden");
             if (recentEntriesSection) recentEntriesSection.classList.remove("hidden");
         } else if (index === 1) { 
+            // All Entries
             if (allEntriesSection) allEntriesSection.classList.remove("hidden");
         } else if (index === 2) { 
+            // Favorites
             if (favoritesSection) favoritesSection.classList.remove("hidden");
+        } else if (index === 3) { 
+            // Settings
+            if (settingsSection) settingsSection.classList.remove("hidden");
         }
     });
 });

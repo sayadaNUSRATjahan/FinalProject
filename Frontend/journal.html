@@ -16,20 +16,35 @@
 
         <!-- ================= SIDEBAR ================= -->
         <aside class="sidebar">
-            <div class="sidebar-logo">
-                <i class="fa-solid fa-book-open"></i>
+            <div class="sidebar-logo-text">
+                <h2>MyJournal</h2>
             </div>
 
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" title="Home"><i class="fa-solid fa-house"></i></a>
-                <a href="#" class="nav-item" title="Entries"><i class="fa-solid fa-book"></i></a>
-                <a href="#" class="nav-item" title="Favorites"><i class="fa-solid fa-star"></i></a>
-                <a href="#" class="nav-item" title="Settings"><i class="fa-solid fa-gear"></i></a>
+                <a href="#" class="nav-item active" title="Home">
+                    <i class="fa-solid fa-house"></i> <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" title="Entries">
+                    <i class="fa-solid fa-book-open"></i> <span>All Entries</span>
+                </a>
+                <a href="#" class="nav-item" title="Favorites">
+                    <i class="fa-solid fa-star"></i> <span>Favorites</span>
+                </a>
+                <a href="#" class="nav-item" title="Settings">
+                    <i class="fa-solid fa-gear"></i> <span>Settings</span>
+                </a>
             </nav>
 
-            <div class="sidebar-profile">
-                <img id="sidebar-profile-img" src="" alt="Profile">
-                <span id="sidebar-profile-name" class="profile-name">User</span>
+            <div class="sidebar-profile-container">
+                <div class="sidebar-profile" id="profile-dropdown-trigger">
+                    <img id="sidebar-profile-img" src="" alt="Profile">
+                    <span id="sidebar-profile-name" class="profile-name">Nusrat</span>
+                    <i class="fa-solid fa-chevron-down profile-arrow"></i>
+                </div>
+                <!-- Logout Dropdown Menu -->
+                <div id="profile-dropdown-menu" class="profile-dropdown hidden">
+                    <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
             </div>
         </aside>
 
@@ -43,7 +58,6 @@
                         <h3 id="welcome-user-heading">Good Evening! 🌙</h3>
                         <p>Stay consistent. Your future self will thank you.</p>
                     </div>
-                    <button id="dash-new-entry-btn" class="dash-new-btn"><i class="fa-solid fa-plus"></i> New Entry</button>
                 </div>
 
                 <!-- 4 Stat Cards Grid -->
@@ -161,13 +175,64 @@
                 <div id="all-posts-container" class="posts-grid"></div>
             </section>
 
-            <!-- Favorites View (Only Favorite Journals) -->
+            <!-- Favorites View -->
             <section id="favorites-section" class="recent-journals-section hidden entries-section-wrapper">
                 <div class="section-title-row">
                     <h2>Favorite Journals</h2>
                     <span id="total-favorites-count" class="entries-count-label"></span>
                 </div>
                 <div id="favorites-posts-container" class="posts-grid"></div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="recent-journals-section hidden entries-section-wrapper">
+                <div class="settings-top-heading">
+                    <h2>Settings</h2>
+                    <p>Manage your profile and journals</p>
+                </div>
+                
+                <div class="settings-container-box">
+                    <div class="settings-section-title">
+                        <i class="fa-regular fa-user"></i> Profile
+                    </div>
+
+                    <div class="settings-profile-pic-row">
+                        <div class="settings-avatar-info-group">
+                            <label>Profile Picture</label>
+                            <div class="settings-avatar-wrapper">
+                                <img id="settings-preview-img" src="" alt="Profile Preview">
+                            </div>
+                        </div>
+                        <div class="settings-pic-upload-box">
+                            <label for="settings-pic-input" class="custom-file-upload">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Change Picture
+                            </label>
+                            <input type="file" id="settings-pic-input" accept="image/*">
+                            <span>JPG, PNG (Max 2MB)</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-form-group">
+                        <label for="settings-name-input">Name</label>
+                        <input type="text" id="settings-name-input" placeholder="Enter your name">
+                    </div>
+
+                    <button id="save-settings-btn" class="settings-save-btn">Save Changes</button>
+                </div>
+
+                <!-- Danger Zone Card -->
+                <div class="danger-zone-box">
+                    <div class="danger-zone-title">
+                        <i class="fa-regular fa-trash-can"></i> Danger Zone
+                    </div>
+                    <div class="danger-zone-content">
+                        <div>
+                            <h4>Delete All Journals</h4>
+                            <p>This action cannot be undone. All your journal entries will be permanently deleted.</p>
+                        </div>
+                        <button id="delete-all-journals-btn" class="danger-delete-btn">Delete All Journals</button>
+                    </div>
+                </div>
             </section>
 
         </main>
@@ -199,10 +264,19 @@
                     <option value="😔 Sad">😔 Sad</option>
                 </select>
             </div>
+            
+            <!-- আপডেট করা ইমেজ আপলোড ফিল্ড -->
             <div class="input-group">
-                <label for="journal-image">Upload Image</label>
-                <input type="file" id="journal-image" accept="image/*">
+                <label>Upload Image</label>
+                <div class="settings-pic-upload-box" style="align-items: flex-start;">
+                    <label for="journal-image" class="custom-file-upload">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Choose Image
+                    </label>
+                    <input type="file" id="journal-image" accept="image/*">
+                    <span id="file-chosen-name" style="font-size: 11px; color: #a68b7c; margin-top: 4px;">JPG, PNG (Max 2MB)</span>
+                </div>
             </div>
+
             <div class="btn-group">
                 <button type="button" id="cancel-btn" class="btn-cancel">Cancel</button>
                 <button type="button" id="save-btn" class="btn-save">Save Entry</button>
