@@ -65,6 +65,30 @@ let editPostId = null;
 let deletePostId = null;
 let currentCalendarDate = new Date();
 
+// ==========================================
+// 📌 Authentication & Back Arrow Protection
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    // ১. চেক করুন ইউজার লগইন করা আছে কিনা
+    const loggedInUser = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
+
+    if (!loggedInUser) {
+        window.location.replace("index.html");
+        return;
+    }
+
+    // ২. ব্যাক বাটন (Back Arrow) প্রটেকশন ও হিস্ট্রি ট্র্যাপ
+    history.pushState(null, null, location.href);
+    
+    window.addEventListener('popstate', function () {
+        localStorage.removeItem("loggedInUser");
+        sessionStorage.removeItem("loggedInUser");
+        
+        history.pushState(null, null, location.href);
+        window.location.replace("index.html");
+    });
+});
+
 // Profile Dropdown Toggle
 if (profileDropdownTrigger && profileDropdownMenu) {
     profileDropdownTrigger.addEventListener("click", (e) => {
@@ -98,7 +122,7 @@ const loadUserProfile = () => {
             
             if (sidebarProfileName) sidebarProfileName.innerText = firstName;
             
-            // সময় অনুযায়ী গ্রিটিংস নির্ধারণ
+            // সময় অনুযায়ী গ্রিটিংস নির্ধারণ
             const currentHour = new Date().getHours();
             let greetingText = "";
             let emoji = "";
